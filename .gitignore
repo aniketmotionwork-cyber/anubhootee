@@ -3,6 +3,11 @@ anubhootee-web/public/fonts/brand/*.otf
 anubhootee-web/public/fonts/brand/*.ttf
 anubhootee-web/public/fonts/brand/*.woff
 anubhootee-web/public/fonts/brand/*.woff2
+# Font packs and any other zip downloads
+*.zip
+*.rar
+*.otf
+*.ttf
 
 # --- Build output ---
 Anubhootee/theme/build/*.zip
