@@ -1,0 +1,162 @@
+/* =========================================================
+   Anubhootee: homepage hero / chapter showcase
+   Full-screen photo (WebGL "cover" or <img object-fit: cover>), grid overlay,
+   oversized left-aligned title, bottom bar with section indicators.
+   ========================================================= */
+body:has(.anu-showcase) { overflow: hidden; background: #0B0907; }
+.anu-showcase {
+	--sc-pad: max(16px, 3vw);
+	--sc-chalk: #FAF4EA;
+	--sc-dim: rgba(250, 244, 234, .62);
+	--sc-hair: rgba(250, 244, 234, .16);
+	--sc-ease: cubic-bezier(.2, .7, .2, 1);
+	position: fixed; inset: 0; height: 100vh; height: 100dvh; z-index: 1;
+	color: var(--sc-chalk); background: #0B0907;
+	user-select: none; -webkit-user-select: none;
+}
+
+/* ---------- Photo ---------- */
+.anu-sc-stage { position: absolute; inset: 0; touch-action: none; cursor: grab; }
+.anu-sc-stage.is-dragging { cursor: grabbing; }
+.anu-sc-gl, .anu-sc-fallback { position: absolute; inset: 0; width: 100%; height: 100%; }
+.anu-sc-fallback { display: none; }
+.anu-sc-fallback img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; opacity: 0; transform: scale(1.04); transition: opacity 1s ease, transform 6s var(--sc-ease); }
+.anu-sc-fallback img.is-on { opacity: 1; transform: scale(1); }
+.anu-showcase.no-webgl .anu-sc-gl { display: none; }
+.anu-showcase.no-webgl .anu-sc-fallback { display: block; }
+
+/* Readability: dark at the bottom (title + bar) and a little at the top (nav) */
+.anu-sc-shade { position: absolute; inset: 0; pointer-events: none; background:
+	linear-gradient(0deg, rgba(11,9,7,.78) 0%, rgba(11,9,7,.38) 30%, rgba(11,9,7,0) 60%),
+	radial-gradient(ellipse 60% 40% at 50% 26%, rgba(11,9,7,.32) 0%, rgba(11,9,7,0) 100%),
+	linear-gradient(180deg, rgba(11,9,7,.45) 0%, rgba(11,9,7,0) 18%); }
+
+/* ---------- Depth effect ----------
+   The subject cutout sits between the big title (back layer) and the labels/links (front layer).
+   In WebGL it gets the same distortion, transition and shading as the photo (see showcase.js). */
+.anu-showcase .anu-sc-slides--back { z-index: 3; }
+.anu-showcase .anu-sc-fg { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
+.anu-showcase .anu-sc-slides--front { z-index: 5; }
+.anu-sc-slides--back .anu-sc-slide > :not(.anu-sc-title) { visibility: hidden; }
+.anu-sc-slides--front .anu-sc-title { visibility: hidden; }
+.anu-sc-fg-gl, .anu-sc-fg-fallback { position: absolute; inset: 0; width: 100%; height: 100%; }
+.anu-sc-fg-fallback { display: none; }
+.anu-showcase.no-webgl .anu-sc-fg-gl { display: none; }
+.anu-showcase.no-webgl .anu-sc-fg-fallback { display: block; }
+/* No-WebGL fallback: the cutout plus the same gradients, masked to the subject's shape */
+.anu-sc-fg-fallback > div { position: absolute; inset: 0; opacity: 0; transform: scale(1.04); transition: opacity 1s ease, transform 6s var(--sc-ease); }
+.anu-sc-fg-fallback > div.is-on { opacity: 1; transform: scale(1); }
+.anu-sc-fg-fallback img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
+.anu-sc-fg-fallback i { position: absolute; inset: 0; background: inherit; }
+
+/* Subtle grid: 12 columns on desktop, 6 on tablet, 4 on phones */
+.anu-sc-grid {
+	--cols: 12;
+	position: absolute; inset: 0 var(--sc-pad); pointer-events: none; z-index: 2;
+	border-inline: 1px solid rgba(250,244,234,.07);
+	background: repeating-linear-gradient(90deg, transparent 0, transparent calc(100% / var(--cols) - 1px), rgba(250,244,234,.07) calc(100% / var(--cols) - 1px), rgba(250,244,234,.07) calc(100% / var(--cols)));
+	opacity: 0; animation: anu-sc-fade 1.6s .6s ease forwards;
+}
+@keyframes anu-sc-fade { to { opacity: 1; } }
+
+/* ---------- Title block (left, lower-middle) ---------- */
+/* Text block is centred horizontally in the upper part of the photo, below the nav;
+   the big title lands about a third of the way down. (showcase.js drives the vertical drag motion.) */
+.anu-sc-slides { position: absolute; left: var(--sc-pad); right: var(--sc-pad); top: 30%; z-index: 5; will-change: transform; pointer-events: none; transform: translateY(calc(var(--sc-gap, 60vh) / -2)); }
+.anu-sc-slide { height: var(--sc-gap, 60vh); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; opacity: 0; transition: opacity .6s ease; }
+.anu-sc-slide.is-active { opacity: 1; }
+
+.anu-sc-meta { display: flex; justify-content: center; align-items: center; gap: 12px; font-size: 16px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: var(--sc-dim); margin-bottom: 18px; }
+.anu-sc-num { font-variant-numeric: tabular-nums; color: var(--sc-chalk); }
+.anu-sc-bar { width: 32px; height: 1px; background: var(--sc-hair); }
+
+.anu-showcase .anu-sc-title {
+	color: #FFFFFF; /* font-family: the headline font, set in app.css */
+	font-size: clamp(72px, 10vw, 140px); line-height: .9;
+	margin: 0; white-space: nowrap;
+	text-shadow: 0 2px 40px rgba(0,0,0,.18);
+}
+.anu-sc-deva { font-family: 'Mukta', 'Tiro Devanagari Marathi', sans-serif; font-weight: 300; font-size: clamp(18px, 1.7vw, 26px); color: rgba(250,244,234,.85); margin-top: 14px; letter-spacing: 0; }
+.anu-sc-more {
+	pointer-events: auto; display: inline-flex; align-items: center; gap: 14px; margin-top: 28px;
+	font-size: 17px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; width: max-content;
+	color: var(--sc-chalk) !important; text-decoration: none !important; padding-bottom: 8px; border-bottom: 1px solid var(--sc-hair);
+	transition: border-color .3s, gap .3s;
+}
+.anu-sc-line { width: 22px; height: 1px; background: #F5B700; transition: width .35s var(--sc-ease); }
+.anu-sc-more:hover { border-color: rgba(250,244,234,.6); gap: 18px; }
+.anu-sc-more:hover .anu-sc-line { width: 44px; }
+.anu-sc-slide:not(.is-active) .anu-sc-more { pointer-events: none; }
+
+/* Staggered entrance when a chapter becomes active */
+.anu-sc-slide > * { transform: translateY(26px); transition: transform 1s var(--sc-ease); }
+.anu-sc-slide .anu-sc-title { transform: translateY(48px); transition-duration: 1.1s; }
+.anu-sc-slide.is-active > * { transform: none; }
+.anu-sc-slide.is-active .anu-sc-deva { transition-delay: .08s; }
+.anu-sc-slide.is-active .anu-sc-more { transition-delay: .14s; }
+
+/* ---------- Bottom bar: counter · section indicators · drag ---------- */
+.anu-sc-bottom {
+	position: absolute; left: var(--sc-pad); right: var(--sc-pad); bottom: 0; z-index: 6;
+	display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 32px;
+	padding: 16px 0 22px; border-top: 1px solid var(--sc-hair);
+	font-size: 15px; font-weight: 400; letter-spacing: .12em; text-transform: uppercase; color: var(--sc-dim);
+}
+.anu-sc-counter { font-variant-numeric: tabular-nums; min-width: 64px; }
+.anu-sc-counter b { color: var(--sc-chalk); font-weight: 400; }
+
+.anu-sc-progress { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 12px; }
+.anu-sc-progress button {
+	position: relative; display: flex; align-items: baseline; gap: 10px; min-width: 0;
+	background: none; border: 0; padding: 10px 0 0; cursor: pointer; text-align: left;
+	font: inherit; letter-spacing: inherit; text-transform: inherit; color: var(--sc-dim); opacity: .7; transition: opacity .3s, color .3s;
+}
+.anu-sc-progress button::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1px; background: var(--sc-hair); }
+.anu-sc-progress button::after { content: ""; position: absolute; left: 0; top: 0; height: 1px; width: 0; background: #F5B700; transition: width .9s var(--sc-ease); }
+.anu-sc-progress button:hover { opacity: 1; }
+.anu-sc-progress button.is-on { opacity: 1; color: var(--sc-chalk); }
+.anu-sc-progress button.is-on::after { width: 100%; }
+.anu-sc-progress i { font-style: normal; font-variant-numeric: tabular-nums; }
+.anu-sc-progress em { font-style: normal; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.anu-sc-hint { display: inline-flex; align-items: center; gap: 12px; white-space: nowrap; }
+.anu-sc-hint__icon { position: relative; width: 18px; height: 28px; border: 1px solid rgba(250,244,234,.45); border-radius: 10px; }
+.anu-sc-hint__icon::after { content: ""; position: absolute; left: 50%; top: 6px; width: 2px; height: 6px; margin-left: -1px; border-radius: 2px; background: var(--sc-chalk); animation: anu-sc-drag 1.8s ease-in-out infinite; }
+@keyframes anu-sc-drag { 0%, 100% { transform: translateY(0); opacity: 1; } 60% { transform: translateY(9px); opacity: 0; } }
+
+.anu-sc-credit { position: absolute; right: var(--sc-pad); bottom: 84px; z-index: 6; font-size: 10px; letter-spacing: .04em; color: rgba(250,244,234,.45); text-align: right; max-width: 40vw; }
+
+/* ---------- Loader ---------- */
+.anu-sc-loader { position: absolute; inset: 0; z-index: 20; background: #0B0907; display: grid; place-items: center; transition: opacity .8s ease, visibility .8s; }
+.anu-sc-loader.is-done { opacity: 0; visibility: hidden; }
+.anu-sc-loader__word { font-family: 'Mukta', sans-serif; font-weight: 300; font-size: clamp(40px, 8vw, 80px); line-height: 1; }
+.anu-sc-loader__road { height: 2px; margin-top: 12px; width: 0; background: repeating-linear-gradient(90deg, #F5B700 0 22px, transparent 22px 34px); transition: width .3s; }
+
+/* ---------- Marathi: never letter-space Devanagari ---------- */
+.anu-lang-mr .anu-showcase * { letter-spacing: 0 !important; }
+.anu-lang-mr .anu-sc-meta, .anu-lang-mr .anu-sc-more, .anu-lang-mr .anu-sc-bottom { font-size: 13px; }
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1024px) {
+	.anu-sc-grid { --cols: 6; }
+	.anu-showcase .anu-sc-title { font-size: clamp(64px, 13vw, 130px); }
+	.anu-sc-progress em { display: none; }
+	.anu-sc-progress button.is-on em { display: inline; }
+	.anu-sc-progress { grid-auto-columns: auto; grid-template-columns: none; }
+	.anu-sc-progress button.is-on { flex: 1; }
+}
+
+/* ---------- Phone ---------- */
+@media (max-width: 640px) {
+	.anu-sc-grid { --cols: 4; }
+	.anu-sc-slides { top: 32%; }
+	.anu-showcase .anu-sc-title { font-size: clamp(56px, 20vw, 110px); white-space: normal; line-height: .9; }
+	.anu-sc-bottom { grid-template-columns: auto 1fr; gap: 16px; padding-bottom: 18px; }
+	.anu-sc-hint { display: none; }
+	.anu-sc-progress button.is-on em { display: none; }
+	.anu-sc-progress { gap: 8px; }
+	.anu-sc-credit { bottom: 76px; max-width: 70vw; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.anu-sc-slide > *, .anu-sc-grid, .anu-sc-hint__icon::after { transition: none; animation: none; opacity: 1; transform: none; }
+}

@@ -1,0 +1,16 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "anubhootee/policy-links",
+	"title": "Policy links",
+	"category": "theme",
+	"icon": "media-text",
+	"description": "Links to Contact, Shipping, Refunds, Privacy and Terms pages (each shows once that page is published).",
+	"textdomain": "anubhootee",
+	"supports": {
+		"html": false,
+		"multiple": true
+	},
+	"editorScript": "anubhootee-blocks-editor",
+	"render": "file:./render.php"
+}

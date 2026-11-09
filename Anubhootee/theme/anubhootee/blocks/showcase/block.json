@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "anubhootee/showcase",
+	"title": "Chapter showcase",
+	"category": "theme",
+	"icon": "cover-image",
+	"description": "Full-screen drag-through chapters with photo transitions.",
+	"textdomain": "anubhootee",
+	"supports": {
+		"html": false,
+		"multiple": false
+	},
+	"editorScript": "anubhootee-blocks-editor",
+	"render": "file:./render.php",
+	"viewScript": "anubhootee-showcase",
+	"style": "anubhootee-showcase"
+}

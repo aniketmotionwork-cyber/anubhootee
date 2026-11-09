@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "anubhootee/byline",
+	"title": "Story byline",
+	"category": "theme",
+	"icon": "admin-users",
+	"description": "Author, date and share links.",
+	"textdomain": "anubhootee",
+	"supports": {
+		"html": false,
+		"multiple": true
+	},
+	"editorScript": "anubhootee-blocks-editor",
+	"render": "file:./render.php",
+	"usesContext": [
+		"postId",
+		"postType"
+	]
+}

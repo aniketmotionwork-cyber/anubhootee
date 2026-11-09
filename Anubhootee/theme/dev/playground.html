@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anubhootee WP Test</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #14110E; color: #FAF6EF; font: 13px system-ui, sans-serif; }
+  #bar { min-height: 36px; display: flex; align-items: center; gap: 12px; padding: 4px 12px; flex-wrap: wrap; box-sizing: border-box; }
+  #bar a { color: #F5B700; cursor: pointer; }
+  #bar .sep { opacity: .3; }
+  iframe { width: 100%; height: calc(100% - 36px); border: 0; background: #fff; }
+</style>
+</head>
+<body>
+<div id="bar"><b>Anubhootee · local WordPress test</b><span id="status">Starting…</span>
+  <a data-go="/">Home</a><a data-go="/chasing-the-monsoon-through-the-western-ghats/">Story</a><a data-go="/mr/pavsalyat-ghat/">मराठी story</a><a data-go="/category/road-travel/">Category</a><a data-go="/about/">About</a>
+  <span class="sep">|</span>
+  <a data-go="/shop/">Shop</a><a data-go="/product/road-line-t-shirt/">Product</a><a data-go="/cart/">Cart</a><a data-go="/checkout/">Checkout</a><a data-go="/my-account/">Account</a>
+  <span class="sep">|</span>
+  <a data-go="/wp-admin/">Admin</a><a data-go="/wp-admin/edit.php?post_type=shop_order">Orders</a><a data-go="/wp-admin/admin.php?page=mlang">Languages</a><a data-go="/wp-admin/term.php?taxonomy=category&tag_ID=2">Chapter settings</a><a data-go="/wp-admin/site-editor.php">Site editor</a></div>
+<iframe id="wp" title="WordPress"></iframe>
+<script type="module">
+import { startPlaygroundWeb } from 'https://playground.wordpress.net/client/index.js';
+const status = document.getElementById('status');
+const bytes = async (p) => new Uint8Array(await (await fetch(p, { cache: 'no-store' })).arrayBuffer());
+const text = async (p) => (await fetch(p, { cache: 'no-store' })).text();
+// Copy a dev script into WordPress and run it, printing any fatal error.
+const run = (name, source) => [
+  { step: 'writeFile', path: `/wordpress/wp-content/anu-${name}.php`, data: source },
+  { step: 'runPHP', code: `<?php ini_set('display_errors', 1); register_shutdown_function(function () { $e = error_get_last(); if ($e && in_array($e['type'], [E_ERROR, E_PARSE, E_COMPILE_ERROR, E_CORE_ERROR], true)) { echo 'ANU_FATAL: ' . $e['message'] . ' @ ' . $e['file'] . ':' . $e['line']; } }); require '/wordpress/wp-content/anu-${name}.php';` },
+];
+const plugin = (slug) => ({ step: 'installPlugin', pluginData: { resource: 'wordpress.org/plugins', slug }, options: { activate: true } });
+try {
+  status.textContent = 'Loading theme…';
+  const zip = await bytes('/build/anubhootee.zip');
+  const [setup, content, store, menus, languages] = await Promise.all(['setup', 'content', 'store', 'menus', 'languages'].map(n => text(`/dev/${n}.php`)));
+  status.textContent = 'Booting WordPress (about a minute)…';
+  const client = await startPlaygroundWeb({
+    iframe: document.getElementById('wp'),
+    remoteUrl: 'https://playground.wordpress.net/remote.html',
+    blueprint: {
+      preferredVersions: { php: '8.2', wp: 'latest' },
+      steps: [
+        { step: 'login', username: 'admin', password: 'password' },
+        { step: 'installTheme', themeData: { resource: 'literal', name: 'anubhootee.zip', contents: zip }, options: { activate: true } },
+        ...run('setup', setup),           // chapters, photos, 4 sample stories
+        // Plugins the site uses on Hostinger (see theme/INSTALL.md §3).
+        plugin('polylang'),
+        plugin('seo-by-rank-math'),
+        plugin('litespeed-cache'),
+        plugin('woocommerce'),
+        ...run('content', content),       // more stories, diaries, vlogs, films, About/Contact/policy pages
+        ...run('store', store),           // shop settings, products, shipping, Cash on delivery, coupon
+        ...run('menus', menus),           // header + footer menu
+        ...run('languages', languages),   // English + मराठी (runs last so everything above is tagged English)
+      ]
+    }
+  });
+  await client.isReady();
+  window.client = client;
+  await client.goTo('/');
+  status.textContent = 'Ready';
+  document.querySelectorAll('[data-go]').forEach(a => a.onclick = () => client.goTo(a.dataset.go));
+} catch (e) {
+  status.textContent = 'Error: ' + (e && e.message || e);
+  console.error(e);
+}
+</script>
+</body>
+</html>

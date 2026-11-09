@@ -1,0 +1,16 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "anubhootee/lang-switch",
+	"title": "Language switch",
+	"category": "theme",
+	"icon": "translation",
+	"description": "EN / मराठी switch (needs Polylang).",
+	"textdomain": "anubhootee",
+	"supports": {
+		"html": false,
+		"multiple": true
+	},
+	"editorScript": "anubhootee-blocks-editor",
+	"render": "file:./render.php"
+}

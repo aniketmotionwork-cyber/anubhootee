@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anubhootee Brand Options</title>
+<link rel="stylesheet" href="brand.css">
+<style>
+  header.top { padding: 48px 0 24px; }
+  header.top h1 { font-size: clamp(40px, 7vw, 80px); }
+  header.top p { color: var(--muted); max-width: 640px; margin-top: 12px; }
+  .opt { margin: 32px 0; border-radius: var(--radius); overflow: hidden; border: 2px solid var(--ink); background: #fff; }
+  .opt-head { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 2px solid var(--ink); font-weight: 800; text-transform: uppercase; letter-spacing: .06em; font-size: 13px; flex-wrap: wrap; gap: 8px; }
+  .opt-body { display: grid; grid-template-columns: 1fr 1fr; }
+  .panel { padding: 56px 32px; display: flex; align-items: center; justify-content: center; min-height: 260px; }
+  @media (max-width: 760px) { .opt-body { grid-template-columns: 1fr; } .panel { padding: 40px 16px; min-height: 200px; } }
+
+  /* Option A: stacked wordmark */
+  .logo-a { text-align: center; }
+  .logo-a .en { font-family: var(--font-display); font-size: clamp(44px, 8vw, 84px); letter-spacing: .02em; line-height: .9; }
+  .logo-a .en span { color: var(--saffron); }
+  .logo-a .mr { font-size: clamp(22px, 4vw, 34px); font-weight: 600; margin-top: 6px; letter-spacing: .02em; }
+
+  /* Option B: badge / road sign */
+  .logo-b { display: flex; align-items: center; gap: 16px; }
+  .logo-b .mark { width: 92px; height: 92px; border-radius: 22px; background: var(--saffron); display: grid; place-items: center; font-family: var(--font-mr); font-weight: 800; font-size: 60px; color: var(--ink); transform: rotate(-6deg); box-shadow: 6px 6px 0 var(--ink); }
+  .logo-b .txt .en { font-family: 'Archivo Black', sans-serif; font-size: clamp(24px, 3.2vw, 40px); line-height: 1; }
+  @media (max-width: 760px) { .logo-b .txt .en { font-size: clamp(22px, 6.5vw, 36px); } .logo-b .mark { width: 72px; height: 72px; font-size: 46px; } }
+  .logo-b .txt .mr { font-size: 20px; font-weight: 600; color: var(--saffron); }
+
+  /* Option C: road line */
+  .logo-c { text-align: left; }
+  .logo-c .en { font-family: var(--font-display); font-size: clamp(48px, 9vw, 92px); line-height: .85; }
+  .logo-c .road { height: 10px; margin: 10px 0; background: repeating-linear-gradient(90deg, var(--turmeric) 0 34px, transparent 34px 52px); }
+  .logo-c .mr { font-size: 26px; font-weight: 800; }
+
+  .dark { background: var(--ink); color: var(--chalk); }
+  .indigo { background: var(--indigo); color: var(--chalk); }
+  .sun { background: var(--turmeric); color: var(--ink); }
+  .sun .logo-b .mark { background: var(--ink); color: var(--turmeric); box-shadow: 6px 6px 0 var(--saffron); }
+  .sun .logo-b .txt .mr { color: var(--ink); }
+
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 24px 0 64px; }
+  .sw { border-radius: var(--radius); border: 2px solid var(--ink); overflow: hidden; background: #fff; }
+  .sw .chip { height: 110px; }
+  .sw .meta { padding: 10px 12px; font-size: 13px; }
+  .sw .meta b { display: block; text-transform: uppercase; letter-spacing: .05em; }
+  @media (max-width: 760px) { .palette { grid-template-columns: repeat(2, 1fr); } }
+
+  .type { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 80px; }
+  .type > div { border: 2px solid var(--ink); border-radius: var(--radius); padding: 24px; background: #fff; }
+  .type small { display: block; text-transform: uppercase; font-weight: 800; letter-spacing: .08em; font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  @media (max-width: 760px) { .type { grid-template-columns: 1fr; } }
+  h2.sec { font-size: clamp(32px, 5vw, 52px); margin-top: 56px; }
+  .back { display: inline-block; margin-top: 8px; font-weight: 800; color: var(--saffron); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1 class="display">Brand options</h1>
+    <p>Three logo directions for Anubhootee, each shown on light and dark backgrounds, plus the proposed colours and fonts. Pick one, or mix parts from several.</p>
+    <a class="back" href="index.html">→ See the homepage mockup</a>
+  </header>
+
+  <section class="opt">
+    <div class="opt-head"><span>Option A · Stacked wordmark</span><span style="color:var(--muted)">Clean, editorial, very bold</span></div>
+    <div class="opt-body">
+      <div class="panel"><div class="logo-a"><div class="en">ANUBHOO<span>TEE</span></div><div class="mr">अनुभूती</div></div></div>
+      <div class="panel dark"><div class="logo-a"><div class="en">ANUBHOO<span>TEE</span></div><div class="mr">अनुभूती</div></div></div>
+    </div>
+  </section>
+
+  <section class="opt">
+    <div class="opt-head"><span>Option B · "अ" badge + wordmark</span><span style="color:var(--muted)">Works as app icon / YouTube avatar</span></div>
+    <div class="opt-body">
+      <div class="panel indigo"><div class="logo-b"><div class="mark">अ</div><div class="txt"><div class="en">ANUBHOOTEE</div><div class="mr">अनुभूती</div></div></div></div>
+      <div class="panel sun"><div class="logo-b"><div class="mark">अ</div><div class="txt"><div class="en">ANUBHOOTEE</div><div class="mr">अनुभूती</div></div></div></div>
+    </div>
+  </section>
+
+  <section class="opt">
+    <div class="opt-head" style="background:var(--turmeric)"><span>Option C · Road line ✓ Chosen</span><span>Travel-first, highway marking</span></div>
+    <div class="opt-body">
+      <div class="panel dark"><div class="logo-c"><div class="en">ANUBHOOTEE</div><div class="road"></div><div class="mr">अनुभूती · प्रवास · चव · संस्कृती</div></div></div>
+      <div class="panel" style="background:var(--saffron)"><div class="logo-c"><div class="en">ANUBHOOTEE</div><div class="road" style="background:repeating-linear-gradient(90deg,var(--ink) 0 34px,transparent 34px 52px)"></div><div class="mr">अनुभूती · प्रवास · चव · संस्कृती</div></div></div>
+    </div>
+  </section>
+
+  <h2 class="sec display">Colours</h2>
+  <div class="palette">
+    <div class="sw"><div class="chip" style="background:var(--saffron)"></div><div class="meta"><b>Saffron</b>#FF6B1A · primary</div></div>
+    <div class="sw"><div class="chip" style="background:var(--indigo)"></div><div class="meta"><b>Indigo</b>#1E1B4B · secondary</div></div>
+    <div class="sw"><div class="chip" style="background:var(--turmeric)"></div><div class="meta"><b>Turmeric</b>#F5B700 · accent</div></div>
+    <div class="sw"><div class="chip" style="background:var(--ink)"></div><div class="meta"><b>Ink</b>#0D0D0D · text / dark</div></div>
+    <div class="sw"><div class="chip" style="background:var(--chalk)"></div><div class="meta"><b>Chalk</b>#FAF7F2 · background</div></div>
+  </div>
+
+  <h2 class="sec display">Fonts</h2>
+  <div class="type" style="margin-top:24px">
+    <div><small>Headlines · Anton</small><div class="display" style="font-size:44px">Roads of Konkan</div></div>
+    <div><small>Body text · Inter</small><p>Twelve hours, three ghats and one perfect plate of misal. Here's what we learned on the road.</p></div>
+    <div><small>Marathi · Mukta</small><p class="mr" style="font-size:24px;font-weight:600">कोकणातील रस्ते आणि चवीचा प्रवास</p></div>
+  </div>
+</div>
+</body>
+</html>

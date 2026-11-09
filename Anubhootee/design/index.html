@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Anubhootee</title>
+<meta name="description" content="Anubhootee: stories, food, festivals, art and films from across India.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;700;900&family=Mukta:wght@300;500;800&family=Tiro+Devanagari+Marathi&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --saffron: #FF6B1A;
+    --turmeric: #F5B700;
+    --marigold: #FFA41B;
+    --kumkum: #D7263D;
+    --ink: #0B0907;
+    --chalk: #FAF4EA;
+    --display: 'Anton', Impact, sans-serif;
+    --body: 'Inter', system-ui, sans-serif;
+    --mr: 'Mukta', 'Tiro Devanagari Marathi', sans-serif;
+    --mr-serif: 'Tiro Devanagari Marathi', 'Mukta', serif;
+    --pad: clamp(16px, 4vw, 56px);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--ink); color: var(--chalk); font-family: var(--body);
+    overflow: hidden; -webkit-font-smoothing: antialiased;
+    user-select: none; -webkit-user-select: none;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+  /* ---------- Stage ---------- */
+  .stage { position: fixed; inset: 0; touch-action: none; cursor: grab; }
+  .stage.dragging { cursor: grabbing; }
+  #gl, .fallback { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .fallback { display: none; }
+  .fallback img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .8s ease; }
+  .fallback img.on { opacity: 1; }
+  .no-webgl #gl { display: none; }
+  .no-webgl .fallback { display: block; }
+  .shade { position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(11,9,7,.78) 0%, rgba(11,9,7,.35) 45%, rgba(11,9,7,0) 70%),
+      linear-gradient(0deg, rgba(11,9,7,.6) 0%, rgba(11,9,7,0) 35%),
+      linear-gradient(180deg, rgba(11,9,7,.55) 0%, rgba(11,9,7,0) 18%); }
+  .grain { position: absolute; inset: -50%; pointer-events: none; opacity: .09; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain 1s steps(6) infinite; }
+  @keyframes grain { 0%{transform:translate(0,0)} 20%{transform:translate(-3%,2%)} 40%{transform:translate(2%,-4%)} 60%{transform:translate(-4%,-1%)} 80%{transform:translate(3%,3%)} }
+
+  /* Giant outlined Devanagari word */
+  .ghost {
+    position: fixed; right: -2vw; top: 50%; transform: translateY(-50%);
+    font-family: var(--mr); font-weight: 800; font-size: clamp(140px, 30vw, 460px); line-height: 1;
+    color: transparent; -webkit-text-stroke: 1.5px rgba(250,244,234,.24);
+    pointer-events: none; white-space: nowrap; transition: opacity .5s ease, transform .9s cubic-bezier(.2,.8,.2,1);
+  }
+  .ghost.swap { opacity: 0; transform: translateY(-46%); }
+
+  /* ---------- Header ---------- */
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 20; display: flex; align-items: center; justify-content: space-between; padding: 22px var(--pad); gap: 16px; }
+  .logo { display: inline-flex; flex-direction: column; line-height: 1; }
+  .logo .en { font-family: var(--display); font-size: 30px; letter-spacing: .03em; }
+  .logo .road { height: 4px; margin-top: 5px; background: repeating-linear-gradient(90deg, var(--turmeric) 0 14px, transparent 14px 21px); }
+  .logo:hover .road { animation: drive .6s linear infinite; }
+  @keyframes drive { to { background-position: 21px 0; } }
+  nav.menu { display: flex; gap: 26px; font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+  nav.menu a { position: relative; opacity: .85; }
+  nav.menu a::after { content: ""; position: absolute; left: 0; right: 100%; bottom: -6px; height: 2px; background: var(--saffron); transition: right .25s; }
+  nav.menu a:hover { opacity: 1; } nav.menu a:hover::after { right: 0; }
+  .hright { display: flex; align-items: center; gap: 12px; }
+  .lang { display: flex; border: 1.5px solid rgba(250,244,234,.6); border-radius: 999px; overflow: hidden; font-size: 12px; font-weight: 700; }
+  .lang button { padding: 6px 11px; }
+  .lang button.on { background: var(--chalk); color: var(--ink); }
+  .lang .mr { font-family: var(--mr); font-size: 13px; }
+  .cart { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; border: 1.5px solid rgba(250,244,234,.6); border-radius: 999px; padding: 6px 12px; }
+  .burger { display: none; width: 40px; height: 40px; position: relative; }
+  .burger span { position: absolute; left: 9px; right: 9px; height: 2px; background: var(--chalk); transition: transform .3s, top .3s; }
+  .burger span:nth-child(1) { top: 15px; } .burger span:nth-child(2) { top: 23px; }
+  .menu-open .burger span:nth-child(1) { top: 19px; transform: rotate(45deg); }
+  .menu-open .burger span:nth-child(2) { top: 19px; transform: rotate(-45deg); }
+
+  /* ---------- Slides column ---------- */
+  .slides { position: fixed; left: var(--pad); top: 50%; z-index: 10; will-change: transform; pointer-events: none; }
+  .slide { height: var(--gap); display: flex; flex-direction: column; justify-content: center; opacity: .18; transition: opacity .4s ease, filter .4s ease; filter: blur(1px); }
+  .slide.active { opacity: 1; filter: none; }
+  .slide .meta { display: flex; align-items: center; gap: 12px; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--turmeric); margin-bottom: 10px; }
+  .slide .meta .num { font-family: var(--mr); font-size: 15px; letter-spacing: 0; color: var(--chalk); }
+  .slide .meta .bar { width: 36px; height: 2px; background: var(--saffron); }
+  .slide h2 { font-family: var(--body); font-weight: 900; text-transform: uppercase; font-size: clamp(52px, 10.5vw, 150px); line-height: .86; letter-spacing: -.035em; }
+  .slide .mrw { font-family: var(--mr-serif); font-size: clamp(22px, 2.6vw, 34px); color: var(--marigold); margin-top: 8px; }
+  .slide p.desc { max-width: 430px; font-size: 15px; line-height: 1.55; opacity: 0; transform: translateY(8px); transition: opacity .4s ease .1s, transform .4s ease .1s; margin-top: 14px; color: rgba(250,244,234,.85); }
+  .slide.active p.desc { opacity: 1; transform: none; }
+  .slide .more { pointer-events: auto; display: inline-flex; align-items: center; gap: 10px; margin-top: 18px; font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; width: max-content; opacity: 0; transition: opacity .4s ease .15s; }
+  .slide.active .more { opacity: 1; }
+  .slide .more .line { width: 28px; height: 2px; background: var(--chalk); transition: width .3s; }
+  .slide .more:hover .line { width: 56px; background: var(--saffron); }
+  .slide:not(.active) .more { pointer-events: none; }
+
+  /* ---------- Progress (rangoli dots) ---------- */
+  .progress { position: fixed; right: var(--pad); top: 50%; transform: translateY(-50%); z-index: 15; display: flex; flex-direction: column; gap: 14px; align-items: flex-end; }
+  .progress button { display: flex; align-items: center; gap: 12px; font-family: var(--mr); font-size: 14px; color: rgba(250,244,234,.55); padding: 2px 0; }
+  .progress button .dot { width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid currentColor; transition: all .3s; }
+  .progress button .lbl { opacity: 0; transform: translateX(6px); transition: all .3s; font-family: var(--body); font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+  .progress button:hover .lbl, .progress button.on .lbl { opacity: 1; transform: none; }
+  .progress button.on { color: var(--chalk); }
+  .progress button.on .dot { background: var(--saffron); border-color: var(--saffron); transform: scale(1.5); box-shadow: 0 0 0 5px rgba(255,107,26,.25); }
+
+  /* ---------- Footer bits ---------- */
+  .hint { position: fixed; right: var(--pad); bottom: 26px; z-index: 15; display: flex; align-items: center; gap: 14px; font-size: 11px; font-weight: 700; letter-spacing: .3em; text-transform: uppercase; }
+  .hint .mr { font-family: var(--mr); letter-spacing: 0; font-size: 14px; color: var(--turmeric); }
+  .hint .mouse { width: 18px; height: 28px; border: 1.5px solid var(--chalk); border-radius: 10px; position: relative; }
+  .hint .mouse::after { content: ""; position: absolute; left: 50%; top: 5px; width: 2px; height: 6px; margin-left: -1px; background: var(--saffron); border-radius: 2px; animation: wheel 1.6s ease-in-out infinite; }
+  @keyframes wheel { 0%{opacity:0;transform:translateY(-2px)} 40%{opacity:1} 100%{opacity:0;transform:translateY(8px)} }
+  .socials { position: fixed; left: var(--pad); bottom: 26px; z-index: 15; display: flex; gap: 18px; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; opacity: .75; }
+  .socials a:hover { color: var(--saffron); opacity: 1; }
+  .credit { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 15; font-size: 10px; opacity: .45; letter-spacing: .04em; white-space: nowrap; }
+  .credit a { text-decoration: underline; }
+
+  /* ---------- Full-screen menu (mobile) ---------- */
+  .overlay { position: fixed; inset: 0; z-index: 18; background: var(--ink); display: flex; flex-direction: column; justify-content: center; padding: 0 var(--pad); gap: 6px; clip-path: circle(0% at calc(100% - 40px) 40px); transition: clip-path .6s cubic-bezier(.7,0,.2,1); }
+  .menu-open .overlay { clip-path: circle(150% at calc(100% - 40px) 40px); }
+  .overlay a { font-weight: 900; text-transform: uppercase; font-size: clamp(36px, 10vw, 64px); letter-spacing: -.03em; line-height: 1.05; display: flex; align-items: baseline; gap: 14px; }
+  .overlay a small { font-family: var(--mr); font-weight: 500; font-size: 18px; color: var(--marigold); letter-spacing: 0; text-transform: none; }
+
+  /* ---------- Loader ---------- */
+  .loader { position: fixed; inset: 0; z-index: 50; background: var(--ink); display: grid; place-items: center; transition: opacity .8s ease, visibility .8s; }
+  .loader.done { opacity: 0; visibility: hidden; }
+  .loader .word { font-family: var(--mr); font-weight: 800; font-size: clamp(64px, 14vw, 160px); line-height: 1; background: linear-gradient(90deg, var(--saffron), var(--turmeric)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .loader .road { height: 6px; margin-top: 14px; width: 0; background: repeating-linear-gradient(90deg, var(--turmeric) 0 22px, transparent 22px 34px); transition: width .3s; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1080px) { nav.menu { display: none; } .burger { display: block; } }
+  @media (max-width: 760px) {
+    header { padding: 16px; }
+    .logo .en { font-size: 24px; }
+    .cart { display: none; }
+    .slides { left: 16px; right: 16px; }
+    .slide h2 { font-size: clamp(48px, 15vw, 80px); }
+    .slide p.desc { font-size: 14px; max-width: 88%; }
+    .progress { right: 14px; gap: 10px; }
+    .progress button .lbl { display: none; }
+    .ghost { font-size: 52vw; right: -8vw; top: 30%; }
+    .socials { display: none; }
+    .credit { left: 16px; transform: none; bottom: 24px; max-width: 55vw; white-space: normal; }
+    .hint { right: 16px; bottom: 20px; }
+    .hint .txt { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { .grain, .hint .mouse::after { animation: none; } }
+
+  /* =========================================================
+     MINIMAL (v3): quieter type, no decoration, photo first
+     ========================================================= */
+  .grain, .ghost, .socials, .hint .mouse { display: none; }
+  .shade { background:
+      linear-gradient(0deg, rgba(11,9,7,.62) 0%, rgba(11,9,7,0) 55%),
+      linear-gradient(180deg, rgba(11,9,7,.35) 0%, rgba(11,9,7,0) 22%); }
+
+  header { padding: 28px var(--pad); }
+  .logo .en { font-family: var(--body); font-weight: 700; font-size: 17px; letter-spacing: .32em; }
+  .logo .road { height: 2px; margin-top: 7px; background: repeating-linear-gradient(90deg, var(--turmeric) 0 10px, transparent 10px 16px); opacity: .9; }
+  nav.menu { gap: 30px; font-size: 12px; font-weight: 500; letter-spacing: .12em; }
+  nav.menu a { opacity: .75; }
+  nav.menu a::after { height: 1px; background: var(--chalk); bottom: -5px; }
+  .lang { border: 0; border-radius: 0; gap: 2px; font-weight: 500; }
+  .lang button { padding: 4px 6px; opacity: .55; }
+  .lang button.on { background: none; color: var(--chalk); opacity: 1; text-decoration: underline; text-underline-offset: 6px; }
+  .cart { border: 0; padding: 4px 0; font-weight: 500; opacity: .75; }
+
+  /* Only the current chapter is shown; it sits low-left over the photo */
+  .slides { top: 64%; }
+  .slide { opacity: 0; filter: none; transition: opacity .5s ease; }
+  .slide.active { opacity: 1; }
+  .slide .meta { gap: 10px; font-size: 11px; font-weight: 500; letter-spacing: .22em; color: rgba(250,244,234,.75); margin-bottom: 14px; }
+  .slide .meta .num { font-family: var(--body); font-size: 11px; letter-spacing: .22em; }
+  .slide .meta .bar { width: 24px; height: 1px; background: rgba(250,244,234,.6); }
+  .slide h2 { font-weight: 500; text-transform: none; font-size: clamp(48px, 8vw, 120px); line-height: .95; letter-spacing: -.045em; }
+  .slide .mrw { font-family: var(--mr); font-weight: 300; font-size: clamp(18px, 1.8vw, 24px); color: rgba(250,244,234,.8); margin-top: 6px; }
+  .slide p.desc { display: none; }
+  .slide .more { margin-top: 26px; font-size: 11px; font-weight: 500; letter-spacing: .22em; gap: 12px; }
+  .slide .more .line { width: 20px; height: 1px; }
+  .slide .more:hover .line { width: 40px; background: var(--chalk); }
+
+  /* Progress: thin lines, no numbers */
+  .progress { gap: 8px; }
+  .progress button { gap: 0; padding: 4px 0; }
+  .progress button > span:not(.dot) { display: none; }
+  .progress button .dot { width: 1.5px; height: 16px; border: 0; border-radius: 0; background: rgba(250,244,234,.35); }
+  .progress button.on .dot { background: var(--chalk); transform: none; box-shadow: none; height: 36px; }
+
+  /* Devanagari must never be letter-spaced: it breaks conjuncts */
+  html[lang=mr] .slide .meta .tag, html[lang=mr] .slide .more, html[lang=mr] nav.menu, html[lang=mr] .cart { letter-spacing: 0; font-family: var(--mr); font-size: 13px; }
+  .counter { position: fixed; left: var(--pad); bottom: 28px; z-index: 15; font-size: 11px; font-weight: 500; letter-spacing: .22em; color: rgba(250,244,234,.75); font-variant-numeric: tabular-nums; }
+  .counter b { color: var(--chalk); font-weight: 500; }
+  .hint { bottom: 28px; gap: 10px; font-weight: 500; letter-spacing: .22em; opacity: .75; }
+  .hint .mr { color: var(--chalk); font-size: 13px; }
+  .credit { left: auto; right: var(--pad); transform: none; bottom: 52px; opacity: .4; }
+
+  .loader .word { background: none; color: var(--chalk); font-weight: 300; font-size: clamp(40px, 8vw, 80px); }
+  .loader .road { height: 2px; margin-top: 12px; }
+
+  .overlay a { font-weight: 500; letter-spacing: -.03em; }
+  .overlay a small { font-weight: 300; color: rgba(250,244,234,.7); }
+
+  @media (max-width: 760px) {
+    .logo .en { font-size: 14px; letter-spacing: .26em; }
+    .slide h2 { font-size: clamp(44px, 14vw, 72px); }
+    .credit { right: 16px; left: auto; bottom: 48px; max-width: 70vw; text-align: right; }
+    .counter { left: 16px; bottom: 22px; }
+    .hint { bottom: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="loader" id="loader"><div><div class="word">अनुभूती</div><div class="road" id="loadbar"></div></div></div>
+
+<div class="stage" id="stage">
+  <canvas id="gl"></canvas>
+  <div class="fallback" id="fallback"></div>
+  <div class="shade"></div>
+  <div class="grain"></div>
+</div>
+
+<div class="ghost" id="ghost" aria-hidden="true">रस्ता</div>
+
+<header>
+  <a class="logo" href="#" aria-label="Anubhootee home"><span class="en">ANUBHOOTEE</span><span class="road"></span></a>
+  <nav class="menu" aria-label="Main">
+    <a href="#" data-i18n="nav.stories">Stories</a><a href="#" data-i18n="nav.food">Food</a><a href="#" data-i18n="nav.culture">Culture</a><a href="#" data-i18n="nav.road">Road Travel</a><a href="#" data-i18n="nav.films">Films</a><a href="#" data-i18n="nav.shop">Shop</a><a href="#" data-i18n="nav.about">About</a>
+  </nav>
+  <div class="hright">
+    <div class="lang" role="group" aria-label="Language"><button class="on" data-lang="en">EN</button><button data-lang="mr" class="mr">मराठी</button></div>
+    <a class="cart" href="#" data-i18n="nav.cart">Cart (0)</a>
+    <button class="burger" id="burger" aria-label="Menu"><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="overlay" id="overlay">
+  <a href="#">Stories <small>गोष्टी</small></a>
+  <a href="#">Food <small>चव</small></a>
+  <a href="#">Culture <small>संस्कृती</small></a>
+  <a href="#">Road Travel <small>प्रवास</small></a>
+  <a href="#">Films &amp; Vlogs <small>चित्रपट</small></a>
+  <a href="#">Shop <small>दुकान</small></a>
+  <a href="#">About <small>आमच्याबद्दल</small></a>
+</div>
+
+<div class="slides" id="slides"></div>
+<div class="progress" id="progress" aria-label="Chapters"></div>
+
+<div class="socials"><a href="#">YouTube</a><a href="#">Instagram</a><a href="#">Facebook</a></div>
+<div class="credit" id="credit"></div>
+<div class="counter" id="counter"><b>01</b> / 06</div>
+<div class="hint"><span class="mouse"></span><span class="txt">Drag</span><span class="mr">· ओढा</span></div>
+
+<script>
+/* ============ Content ============ */
+const SLIDES = [
+  { key:'road',  img:'img/road.jpg',  href:'story.html', title:'Rasta',     mr:'रस्ता',     ghost:'रस्ता',
+    tag:{en:'Road Travel', mr:'प्रवास'},
+    desc:{en:'Ghats in the monsoon, coastal highways and every chai stop in between. Routes, road diaries and the important tips.',
+          mr:'पावसाळ्यातले घाट, किनाऱ्याचे महामार्ग आणि वाटेतले प्रत्येक चहाची टपरी. मार्ग, प्रवास डायरी आणि महत्त्वाच्या टिप्स.'},
+    cta:{en:'Explore routes', mr:'मार्ग पहा'}, credit:'Mariappan Ramachandran' },
+  { key:'food',  img:'img/food.jpg',  title:'Chav',      mr:'चव',        ghost:'चव',
+    tag:{en:'Food', mr:'खाद्य'},
+    desc:{en:'Kolhapuri misal, street-side vada pav and recipes passed down kitchens. India, one plate at a time.',
+          mr:'कोल्हापुरी मिसळ, रस्त्यावरचा वडापाव आणि पिढ्यान्‌पिढ्यांच्या पाककृती. एका ताटात भारत.'},
+    cta:{en:'Taste stories', mr:'चवीच्या गोष्टी'}, credit:'Ankushkr2020' },
+  { key:'utsav', img:'img/utsav.jpg', title:'Utsav',     mr:'उत्सव',     ghost:'उत्सव',
+    tag:{en:'Festivals & Culture', mr:'सण आणि संस्कृती'},
+    desc:{en:'Holi, Ganeshotsav, wari and village jatras. The colour, the music and the people behind every celebration.',
+          mr:'होळी, गणेशोत्सव, वारी आणि गावच्या जत्रा. प्रत्येक सणामागचे रंग, संगीत आणि माणसं.'},
+    cta:{en:'Feel the culture', mr:'संस्कृती अनुभवा'}, credit:'Achary K Krishnan' },
+  { key:'goshti',img:'img/ghat.jpg',  title:'Goshti',    mr:'गोष्टी',     ghost:'गोष्ट',
+    tag:{en:'Stories & Diaries', mr:'गोष्टी आणि डायरी'},
+    desc:{en:'Evening aarti on the ghats, strangers who became friends, nights on overnight buses. Long reads and personal diaries.',
+          mr:'घाटावरची संध्याकाळची आरती, अनोळखी लोकांची मैत्री, रात्रीच्या बसचे प्रवास. दीर्घ लेख आणि वैयक्तिक डायरी.'},
+    cta:{en:'Read stories', mr:'गोष्टी वाचा'}, credit:'Rangan Datta Wiki' },
+  { key:'kala',  img:'img/kala.jpg',  title:'Kala',      mr:'कला',       ghost:'कला',
+    tag:{en:'Art & Handicrafts · Shop', mr:'कला आणि हस्तकला · दुकान'},
+    desc:{en:'Warli, Paithani, terracotta and the artisans who keep them alive. Bring a piece of the journey home.',
+          mr:'वारली, पैठणी, टेराकोटा आणि ही कला जपणारे कारागीर. प्रवासाचा एक तुकडा घरी न्या.'},
+    cta:{en:'Visit the shop', mr:'दुकानात जा'}, credit:'PratishKhedekar' },
+  { key:'film',  img:'img/film.jpg',  title:'Chitrapat', mr:'चित्रपट',    ghost:'चित्र',
+    tag:{en:'Documentaries & Vlogs', mr:'माहितीपट आणि व्लॉग्स'},
+    desc:{en:'From the Thar to the Konkan coast: documentaries, YouTube vlogs and reels from the road.',
+          mr:'थरच्या वाळवंटापासून कोकण किनाऱ्यापर्यंत: माहितीपट, यूट्यूब व्लॉग्स आणि रील्स.'},
+    cta:{en:'Watch films', mr:'चित्रपट पहा'}, credit:'Clément Bardot' },
+];
+const I18N = {
+  en: { 'nav.stories':'Stories','nav.food':'Food','nav.culture':'Culture','nav.road':'Road Travel','nav.films':'Films','nav.shop':'Shop','nav.about':'About','nav.cart':'Cart (0)', photo:'Photo' },
+  mr: { 'nav.stories':'गोष्टी','nav.food':'खाद्य','nav.culture':'संस्कृती','nav.road':'प्रवास','nav.films':'चित्रपट','nav.shop':'दुकान','nav.about':'आमच्याबद्दल','nav.cart':'कार्ट (०)', photo:'छायाचित्र' },
+};
+const DEVA = ['०','१','२','३','४','५','६','७','८','९'];
+const deva = n => String(n).padStart(2,'0').split('').map(d=>DEVA[d]).join('');
+let lang = 'en';
+
+/* ============ Build DOM ============ */
+const slidesEl = document.getElementById('slides');
+const progEl = document.getElementById('progress');
+const fallback = document.getElementById('fallback');
+SLIDES.forEach((s,i) => {
+  const d = document.createElement('div');
+  d.className = 'slide';
+  d.innerHTML = `<div class="meta"><span class="num">${deva(i+1)}</span><span class="bar"></span><span class="tag"></span></div>
+    <h2>${s.title}</h2><div class="mrw">${s.mr}</div><p class="desc"></p>
+    <a class="more" href="${s.href || '#'}"><span class="line"></span><span class="cta"></span></a>`;
+  slidesEl.appendChild(d);
+  const b = document.createElement('button');
+  b.innerHTML = `<span class="lbl"></span><span>${deva(i+1)}</span><span class="dot"></span>`;
+  b.setAttribute('aria-label', s.tag.en);
+  b.addEventListener('click', () => goTo(i));
+  progEl.appendChild(b);
+  const im = document.createElement('img'); im.src = s.img; im.alt = ''; fallback.appendChild(im);
+});
+function applyLang() {
+  document.documentElement.lang = lang === 'mr' ? 'mr' : 'en';
+  [...slidesEl.children].forEach((el,i) => {
+    const s = SLIDES[i];
+    el.querySelector('.tag').textContent = s.tag[lang];
+    el.querySelector('.desc').textContent = s.desc[lang];
+    el.querySelector('.cta').textContent = s.cta[lang];
+    el.querySelector('.desc').style.fontFamily = lang === 'mr' ? 'var(--mr)' : '';
+    progEl.children[i].querySelector('.lbl').textContent = s.tag[lang].split(' · ')[0];
+  });
+  document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = I18N[lang][el.dataset.i18n]);
+  updateCredit(active);
+}
+document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => {
+  lang = b.dataset.lang;
+  document.querySelectorAll('.lang button').forEach(x => x.classList.toggle('on', x === b));
+  applyLang();
+}));
+document.getElementById('burger').addEventListener('click', () => document.body.classList.toggle('menu-open'));
+
+/* ============ Scroll / drag physics ============ */
+const N = SLIDES.length;
+let target = 0, current = 0, active = -1, velocity = 0;
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+const gap = () => Math.min(window.innerHeight * 0.62, 560);
+function setGap(){ document.documentElement.style.setProperty('--gap', gap()+'px'); }
+setGap(); addEventListener('resize', () => { setGap(); resizeGL(); });
+
+function goTo(i){ target = clamp(i, 0, N-1); }
+
+const stage = document.getElementById('stage');
+let dragging = false, startY = 0, startT = 0, lastY = 0, lastTime = 0, flick = 0;
+function down(e){ if (e.button > 0) return; dragging = true; startY = lastY = e.clientY; startT = target; lastTime = performance.now(); flick = 0; stage.classList.add('dragging'); }
+function move(e){
+  if (!dragging) return;
+  const now = performance.now(), dy = e.clientY - lastY;
+  flick = dy / Math.max(1, now - lastTime); lastY = e.clientY; lastTime = now;
+  target = clamp(startT - (e.clientY - startY) / (gap() * 1.1), -0.25, N - 0.75);
+}
+function up(){
+  if (!dragging) return; dragging = false; stage.classList.remove('dragging');
+  let t = target - clamp(flick, -2, 2) * 0.45;
+  target = clamp(Math.round(t), 0, N-1);
+}
+stage.addEventListener('pointerdown', down);
+addEventListener('pointermove', move);
+addEventListener('pointerup', up); addEventListener('pointercancel', up);
+
+let wheelAcc = 0, wheelLock = 0;
+addEventListener('wheel', e => {
+  e.preventDefault();
+  const now = performance.now();
+  wheelAcc += e.deltaY;
+  if (now > wheelLock && Math.abs(wheelAcc) > 40) {
+    goTo(Math.round(target) + Math.sign(wheelAcc)); wheelAcc = 0; wheelLock = now + 650;
+  }
+  if (now > wheelLock) wheelAcc *= 0.9;
+}, { passive: false });
+addEventListener('keydown', e => {
+  if (['ArrowDown','PageDown',' '].includes(e.key)) { e.preventDefault(); goTo(Math.round(target)+1); }
+  if (['ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); goTo(Math.round(target)-1); }
+  if (e.key === 'Escape') document.body.classList.remove('menu-open');
+});
+
+const ghost = document.getElementById('ghost');
+const creditEl = document.getElementById('credit');
+function updateCredit(i){ if (i < 0) return; creditEl.innerHTML = `${I18N[lang].photo}: ${SLIDES[i].credit} · CC BY-SA 4.0 · <a href="img/CREDITS.md" target="_blank">Wikimedia Commons</a>`; }
+function setActive(i){
+  if (i === active) return;
+  active = i;
+  [...slidesEl.children].forEach((el,k) => el.classList.toggle('active', k === i));
+  [...progEl.children].forEach((el,k) => el.classList.toggle('on', k === i));
+  ghost.classList.add('swap');
+  setTimeout(() => { ghost.textContent = SLIDES[i].ghost; ghost.classList.remove('swap'); }, 280);
+  fallback.querySelectorAll('img').forEach((im,k) => im.classList.toggle('on', k === i));
+  document.getElementById('counter').innerHTML = `<b>${String(i+1).padStart(2,'0')}</b> / ${String(N).padStart(2,'0')}`;
+  updateCredit(i);
+}
+
+/* ============ WebGL liquid transition ============ */
+const canvas = document.getElementById('gl');
+const gl = canvas.getContext('webgl', { antialias: false, premultipliedAlpha: false });
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let prog, uni = {}, textures = [], sizes = [];
+
+const VS = `attribute vec2 p; varying vec2 vUv; void main(){ vUv = p*0.5+0.5; gl_Position = vec4(p,0.,1.); }`;
+const FS = `precision highp float;
+varying vec2 vUv;
+uniform sampler2D t0, t1;
+uniform vec2 s0, s1, res;
+uniform float prog, vel, time;
+float h(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }
+float n(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.-2.*f);
+  return mix(mix(h(i),h(i+vec2(1,0)),f.x), mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x), f.y); }
+float fbm(vec2 p){ float v=0., a=.5; for(int i=0;i<4;i++){ v+=a*n(p); p*=2.03; a*=.5; } return v; }
+vec2 cover(vec2 uv, vec2 img){
+  float ra = res.x/res.y, ri = img.x/img.y;
+  vec2 sc = ra > ri ? vec2(1., ri/ra) : vec2(ra/ri, 1.);
+  return (uv-.5)*sc + .5;
+}
+vec3 samp(sampler2D t, vec2 uv, vec2 sz, float split){
+  vec2 c = cover(uv, sz);
+  return vec3(texture2D(t, c + vec2(split,0.)).r, texture2D(t, c).g, texture2D(t, c - vec2(split,0.)).b);
+}
+void main(){
+  vec2 uv = vUv;
+  float nn = fbm(uv*3.2 + vec2(0., time*.05));
+  float w = .18;
+  float edge = (1.-uv.y)*.55 + nn*.45;
+  float t = prog*(1.+2.*w) - w;
+  float m = smoothstep(edge-w, edge+w, t);
+  float wave = sin(uv.y*9. + time*1.6)*.008*abs(vel);
+  float zoom = 1. - .04*sin(time*.12);
+  vec2 base = (uv-.5)*zoom + .5 + vec2(wave, 0.);
+  vec2 uv0 = base + vec2(0., -m*.06*nn);
+  vec2 uv1 = base + vec2(0., (1.-m)*.06*nn);
+  float split = .0015*abs(vel);
+  vec3 a = samp(t0, uv0, s0, split);
+  vec3 b = samp(t1, uv1, s1, split);
+  vec3 col = mix(a, b, m);
+  col = mix(col, col*vec3(1.04,.99,.94), .4);          /* gentle warm grade */
+  float v = smoothstep(1.3, .4, length(uv-.5)*1.4);     /* soft vignette */
+  col *= mix(.75, 1., v);
+  gl_FragColor = vec4(col, 1.);
+}`;
+function sh(type, src){ const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s); if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) throw gl.getShaderInfoLog(s); return s; }
+function initGL(){
+  prog = gl.createProgram();
+  gl.attachShader(prog, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, FS));
+  gl.linkProgram(prog); gl.useProgram(prog);
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const loc = gl.getAttribLocation(prog, 'p'); gl.enableVertexAttribArray(loc); gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+  ['t0','t1','s0','s1','res','prog','vel','time'].forEach(k => uni[k] = gl.getUniformLocation(prog, k));
+  gl.uniform1i(uni.t0, 0); gl.uniform1i(uni.t1, 1);
+  resizeGL();
+}
+function resizeGL(){
+  if (!gl || !prog) return;
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  canvas.width = innerWidth * dpr; canvas.height = innerHeight * dpr;
+  gl.viewport(0, 0, canvas.width, canvas.height);
+  gl.uniform2f(uni.res, canvas.width, canvas.height);
+}
+function makeTex(img){
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+  const t = gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D, t);
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, img);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+  return t;
+}
+
+/* ============ Load & loop ============ */
+const loader = document.getElementById('loader'), loadbar = document.getElementById('loadbar');
+let loaded = 0;
+const imgs = SLIDES.map(s => new Promise(res => {
+  const im = new Image();
+  im.onload = () => { loaded++; loadbar.style.width = (loaded/N*100)+'%'; res(im); };
+  im.onerror = () => { loaded++; res(null); };
+  im.src = s.img;
+}));
+Promise.all(imgs).then(list => {
+  let useGL = !!gl;
+  if (useGL) {
+    try { initGL(); list.forEach((im,i) => { textures[i] = im ? makeTex(im) : null; sizes[i] = im ? [im.width, im.height] : [1,1]; }); }
+    catch (err) { console.warn('WebGL off:', err); useGL = false; }
+  }
+  if (!useGL) document.body.classList.add('no-webgl');
+  applyLang(); setActive(0);
+  setTimeout(() => loader.classList.add('done'), 350);
+  requestAnimationFrame(t => loop(t, useGL));
+});
+
+let last = 0;
+function loop(now, useGL){
+  const dt = Math.min(64, now - last || 16); last = now;
+  const prev = current;
+  const k = dragging ? 0.35 : 0.085;
+  current += (target - current) * (1 - Math.pow(1 - k, dt / 16.67));
+  velocity += ((current - prev) * 60 - velocity) * 0.2;
+
+  slidesEl.style.transform = `translateY(${-current * gap() - gap()/2}px)`;
+  setActive(clamp(Math.round(current), 0, N-1));
+
+  if (useGL) {
+    const c = clamp(current, 0, N-1);
+    let i0 = Math.floor(c), p = c - i0;
+    let i1 = Math.min(i0 + 1, N - 1);
+    if (reduced) p = p > .5 ? 1 : 0;
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, textures[i0]);
+    gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, textures[i1]);
+    gl.uniform2f(uni.s0, ...sizes[i0]); gl.uniform2f(uni.s1, ...sizes[i1]);
+    gl.uniform1f(uni.prog, p);
+    gl.uniform1f(uni.vel, reduced ? 0 : clamp(velocity, -3, 3));
+    gl.uniform1f(uni.time, reduced ? 0 : now / 1000);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  }
+  requestAnimationFrame(t => loop(t, useGL));
+}
+</script>
+</body>
+</html>

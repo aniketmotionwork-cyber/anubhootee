@@ -1,0 +1,181 @@
+/* =========================================================
+   Anubhootee: theme styles (minimal, photo-first)
+   ========================================================= */
+:root {
+	--anu-ink: var(--wp--preset--color--ink, #14110E);
+	--anu-ink-2: var(--wp--preset--color--ink-2, #4A443D);
+	--anu-muted: var(--wp--preset--color--muted, #8A8279);
+	--anu-line: var(--wp--preset--color--line, #E4DDD2);
+	--anu-chalk: var(--wp--preset--color--chalk, #FAF6EF);
+	--anu-turmeric: var(--wp--preset--color--turmeric, #F5B700);
+	--anu-saffron: var(--wp--preset--color--saffron, #FF6B1A);
+	--anu-mr: var(--wp--preset--font-family--marathi, 'Mukta', sans-serif);
+	--anu-pad: clamp(16px, 4vw, 56px);
+}
+body { -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+.anu-lang-mr { font-family: var(--anu-mr); }
+/* Devanagari must never be letter-spaced: it breaks conjuncts */
+.anu-lang-mr *, :lang(mr) { letter-spacing: 0 !important; }
+.wp-site-blocks { padding-top: 0; }
+.wp-site-blocks > * { margin-block-start: 0; }
+
+/* ---------- Reading progress ---------- */
+.anu-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--anu-turmeric); z-index: 100; pointer-events: none; }
+.admin-bar .anu-progress { top: 32px; }
+
+/* ---------- Header ---------- */
+.anu-header {
+	padding: 24px var(--anu-pad) !important;
+	gap: 24px;
+	position: relative; z-index: 50;
+	transition: background .3s, color .3s, padding .3s, border-color .3s;
+	border-bottom: 1px solid transparent;
+}
+.anu-header.is-overlay { position: fixed; top: 0; left: 0; right: 0; color: var(--anu-chalk); }
+.admin-bar .anu-header.is-overlay { top: 32px; }
+@media (max-width: 782px) { .admin-bar .anu-header.is-overlay, .admin-bar .anu-progress { top: 46px; } }
+.anu-header.is-overlay a, .anu-header.is-overlay .wp-block-navigation-item__content { color: var(--anu-chalk); }
+.anu-header.is-overlay .wp-block-navigation__responsive-container-open svg { fill: var(--anu-chalk); }
+.anu-header.is-solid { background: rgba(250,246,239,.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--anu-ink); padding-block: 16px !important; border-color: var(--anu-line); }
+.anu-header.is-solid a, .anu-header.is-solid .wp-block-navigation-item__content { color: var(--anu-ink); }
+.anu-header.is-solid .wp-block-navigation__responsive-container-open svg { fill: var(--anu-ink); }
+.anu-header:not(.is-overlay) { border-color: var(--anu-line); }
+
+.anu-logo { display: inline-flex; flex-direction: column; line-height: 1; text-decoration: none !important; color: inherit; }
+.anu-logo__name { font-weight: 700; font-size: 15px; letter-spacing: .32em; text-transform: uppercase; }
+.anu-logo__road { height: 2px; margin-top: 7px; background: repeating-linear-gradient(90deg, var(--anu-turmeric) 0 10px, transparent 10px 16px); }
+.anu-logo:hover .anu-logo__road { animation: anu-drive .6s linear infinite; }
+@keyframes anu-drive { to { background-position: 16px 0; } }
+.anu-header-right { gap: 22px; }
+.anu-nav .wp-block-navigation-item__content { text-decoration: none; opacity: .8; }
+.anu-nav .wp-block-navigation-item__content:hover { opacity: 1; color: inherit; }
+.anu-nav .wp-block-navigation__container { gap: 26px; }
+/* Mobile menu overlay */
+.anu-nav .wp-block-navigation__responsive-container.is-menu-open { background: var(--anu-ink) !important; color: var(--anu-chalk) !important; padding: 32px var(--anu-pad); }
+.anu-nav .is-menu-open .wp-block-navigation-item__content { color: var(--anu-chalk) !important; font-size: clamp(32px, 9vw, 56px); font-weight: 500; letter-spacing: -.03em; text-transform: none; opacity: 1; }
+.anu-nav .is-menu-open .wp-block-navigation__container { gap: 6px; }
+@media (max-width: 640px) { .anu-logo__name { font-size: 13px; letter-spacing: .26em; } .anu-header { padding: 16px !important; } }
+
+.anu-lang { display: flex; gap: 2px; font-size: 12px; font-weight: 500; letter-spacing: .12em; }
+.anu-lang a { padding: 4px 5px; opacity: .55; text-decoration: none; color: inherit; }
+.anu-lang a.is-current { opacity: 1; text-decoration: underline; text-underline-offset: 6px; }
+.anu-lang a[lang=mr] { font-family: var(--anu-mr); font-size: 13px; letter-spacing: 0; }
+
+/* ---------- Footer ---------- */
+.anu-footer { background: var(--anu-ink); color: rgba(250,246,239,.7); padding: 40px var(--anu-pad) !important; gap: 16px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; margin-top: 0 !important; }
+.anu-footer a { color: rgba(250,246,239,.7); text-decoration: none; }
+.anu-footer a:hover { color: var(--anu-chalk); }
+.anu-footer p { color: inherit; margin: 0; }
+.anu-footer .wp-block-navigation__container { gap: 22px; }
+.anu-footer-left { gap: 12px 28px; }
+.anu-policy { display: flex; flex-wrap: wrap; gap: 8px 18px; opacity: .75; }
+.anu-policy a { color: inherit; }
+
+/* ---------- Story hero ---------- */
+.anu-hero { position: relative; height: 88vh; min-height: 520px; color: var(--anu-chalk); overflow: hidden; margin: 0 !important; max-width: none !important; background: var(--anu-ink); }
+.anu-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); animation: anu-settle 2.4s cubic-bezier(.2,.7,.2,1) forwards; }
+@keyframes anu-settle { to { transform: scale(1); } }
+.anu-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(20,17,14,.7) 0%, rgba(20,17,14,0) 55%), linear-gradient(180deg, rgba(20,17,14,.35), rgba(20,17,14,0) 22%); }
+.anu-hero__inner { position: absolute; left: var(--anu-pad); right: var(--anu-pad); bottom: clamp(32px, 7vh, 72px); z-index: 2; max-width: 1000px; }
+.anu-kicker { display: flex; gap: 10px; align-items: center; font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; opacity: .85; flex-wrap: wrap; }
+.anu-kicker a { color: inherit; text-decoration: none; }
+.anu-kicker__bar { width: 24px; height: 1px; background: currentColor; opacity: .7; }
+.anu-hero h1 { color: var(--anu-chalk); font-weight: 400; font-size: clamp(40px, 6.6vw, 96px); line-height: 1; letter-spacing: -.045em; margin: 18px 0 12px; }
+.anu-lang-mr .anu-hero h1 { line-height: 1.15; font-weight: 500; }
+.anu-hero__sub { font-family: var(--anu-mr); font-weight: 300; font-size: clamp(18px, 2vw, 24px); opacity: .85; margin: 0; color: var(--anu-chalk); }
+.anu-hero__credit { position: absolute; right: var(--anu-pad); bottom: 16px; z-index: 2; font-size: 10px; opacity: .55; margin: 0; color: var(--anu-chalk); }
+.anu-hero.no-image { height: auto; min-height: 0; padding: 160px 0 64px; }
+.anu-hero.no-image::after { display: none; }
+.anu-hero.no-image .anu-hero__inner { position: relative; left: auto; right: auto; bottom: auto; margin: 0 var(--anu-pad); }
+
+/* ---------- Byline ---------- */
+.anu-byline { max-width: 680px; margin: 0 auto !important; padding: 44px 16px 22px; display: flex; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid var(--anu-line); font-size: 13px; color: var(--anu-muted); flex-wrap: wrap; line-height: 1.4; }
+.anu-byline__who { display: flex; align-items: center; gap: 12px; }
+.anu-byline__avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--anu-ink); color: var(--anu-turmeric); display: grid; place-items: center; font-family: var(--anu-mr); font-size: 18px; overflow: hidden; }
+.anu-byline__avatar img { width: 100%; height: 100%; object-fit: cover; }
+.anu-byline b { color: var(--anu-ink); font-weight: 500; display: block; }
+.anu-share { display: flex; gap: 16px; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; }
+.anu-share a, .anu-share button { color: var(--anu-muted); text-decoration: none; background: none; border: 0; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; padding: 0; }
+.anu-share a:hover, .anu-share button:hover { color: var(--anu-ink); }
+
+/* ---------- Article ---------- */
+.anu-article { padding: 40px 16px 24px !important; }
+.anu-article > p { font-size: 19px; line-height: 1.75; }
+.anu-lang-mr .anu-article > p { font-size: 20px; line-height: 1.85; }
+.anu-article > p:first-child, .anu-article .is-style-lede { font-size: 22px; line-height: 1.6; color: var(--anu-ink); }
+.anu-article > h2 { margin-top: 56px; }
+.anu-article .wp-block-quote { margin-block: 56px; }
+.anu-article .wp-block-quote p { color: var(--anu-ink); margin-bottom: 12px; }
+.anu-article .wp-block-quote cite { font-family: var(--wp--preset--font-family--body); font-style: normal; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--anu-muted); }
+.anu-lang-mr .wp-block-quote { font-family: var(--anu-mr); font-style: normal; font-weight: 300; }
+.anu-article .wp-block-image.alignwide, .anu-article .wp-block-image.alignfull { margin-block: 56px; }
+.anu-article .wp-block-image figcaption { text-align: left; color: var(--anu-muted); font-size: 13px; margin-top: 12px; }
+.anu-article .wp-block-embed { margin-block: 48px; }
+.anu-article .wp-block-embed figcaption { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--anu-muted); text-align: left; }
+
+/* Pattern: route facts */
+.anu-route { border-block: 1px solid var(--anu-line); gap: 0 !important; margin-block: 48px !important; }
+.anu-route > * { padding: 18px 0; margin: 0 !important; }
+.anu-route p { margin: 0; }
+.anu-route .anu-route-label { font-size: 11px !important; letter-spacing: .18em; text-transform: uppercase; color: var(--anu-muted); margin-bottom: 6px !important; }
+.anu-route .anu-route-value { font-size: 20px !important; font-weight: 500; color: var(--anu-ink); }
+@media (max-width: 600px) { .anu-route { grid-template-columns: 1fr 1fr !important; } }
+
+/* Pattern: important tips */
+.anu-tips { border-top: 1px solid var(--anu-ink); margin-block: 56px !important; }
+.anu-tips h3 { font-size: 11px !important; letter-spacing: .22em; text-transform: uppercase; font-weight: 500; padding: 16px 0; margin: 0; }
+.anu-tips ol { list-style: none; padding: 0; margin: 0; counter-reset: tip; }
+.anu-tips li { counter-increment: tip; position: relative; padding: 16px 0 16px 48px; margin: 0; border-top: 1px solid var(--anu-line); font-size: 16px; line-height: 1.6; color: var(--anu-ink-2); }
+.anu-tips li::before { content: counter(tip, decimal-leading-zero); position: absolute; left: 0; top: 19px; font-size: 12px; color: var(--anu-muted); font-variant-numeric: tabular-nums; }
+.anu-tips li strong { color: var(--anu-ink); font-weight: 500; }
+
+/* Tags */
+.anu-tags { display: flex; gap: 8px; flex-wrap: wrap; font-size: 0; }
+.anu-tags a { font-size: 12px; border: 1px solid var(--anu-line); padding: 6px 12px; border-radius: 999px; color: var(--anu-ink-2); text-decoration: none; }
+.anu-tags a:hover { border-color: var(--anu-ink); color: var(--anu-ink); }
+.anu-tags .wp-block-post-terms__separator { display: none; }
+
+/* ---------- Next story ---------- */
+.anu-next { position: relative; display: block; height: 70vh; min-height: 420px; margin-top: 80px !important; color: var(--anu-chalk) !important; overflow: hidden; text-decoration: none !important; background: var(--anu-ink); max-width: none !important; }
+.anu-next img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.anu-next:hover img { transform: scale(1.04); }
+.anu-next::after { content: ""; position: absolute; inset: 0; background: rgba(20,17,14,.45); transition: background .4s; }
+.anu-next:hover::after { background: rgba(20,17,14,.3); }
+.anu-next__inner { position: absolute; left: var(--anu-pad); right: var(--anu-pad); bottom: clamp(32px, 7vh, 64px); z-index: 2; }
+.anu-next small { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; opacity: .85; }
+.anu-next__title { display: block; font-weight: 400; font-size: clamp(36px, 6vw, 88px); letter-spacing: -.045em; line-height: 1.02; margin-top: 14px; }
+.anu-lang-mr .anu-next__title { line-height: 1.15; }
+.anu-next__arrow { display: inline-block; transition: transform .3s; }
+.anu-next:hover .anu-next__arrow { transform: translateX(10px); }
+
+/* ---------- Archive / blog grid ---------- */
+.anu-archive { padding-top: 64px !important; padding-bottom: 96px !important; }
+.anu-archive .wp-block-query-title { font-size: clamp(40px, 6vw, 80px); font-weight: 400; letter-spacing: -.045em; line-height: 1; margin-bottom: 8px; }
+.anu-archive .wp-block-term-description { color: var(--anu-muted); max-width: 560px; }
+.anu-archive .wp-block-term-description p { font-size: 17px; }
+.anu-grid { margin-top: 48px !important; }
+.anu-grid .wp-block-post-template { gap: 48px 24px !important; }
+.anu-grid .wp-block-post { margin: 0; }
+.anu-grid .wp-block-post-featured-image { margin: 0 0 16px !important; overflow: hidden; }
+.anu-grid .wp-block-post-featured-image img { transition: transform 1s cubic-bezier(.2,.7,.2,1); }
+.anu-grid .wp-block-post:hover .wp-block-post-featured-image img { transform: scale(1.04); }
+.anu-grid .wp-block-post-terms { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--anu-muted); margin: 0 0 6px; }
+.anu-grid .wp-block-post-terms a { color: inherit; text-decoration: none; }
+.anu-grid .wp-block-post-title { font-size: 24px; font-weight: 500; letter-spacing: -.02em; line-height: 1.2; margin: 0; }
+.anu-grid .wp-block-post-title a { text-decoration: none; }
+.anu-grid .wp-block-query-pagination { margin-top: 64px; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
+.anu-grid .wp-block-query-pagination a { text-decoration: none; }
+@media (max-width: 781px) { .anu-grid .wp-block-post-template { grid-template-columns: 1fr !important; } }
+@media (min-width: 782px) and (max-width: 1024px) { .anu-grid .wp-block-post-template { grid-template-columns: 1fr 1fr !important; } }
+
+/* ---------- Pages ---------- */
+.anu-page { padding-top: 64px !important; padding-bottom: 96px !important; }
+.anu-page > .wp-block-post-title { margin-bottom: 40px; }
+
+/* ---------- Reveal on scroll ---------- */
+.anu-js .anu-article > * { opacity: 0; transform: translateY(16px); transition: opacity .8s ease, transform .8s ease; }
+.anu-js .anu-article > .is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+	.anu-js .anu-article > * { opacity: 1; transform: none; }
+	.anu-hero img { animation: none; transform: none; }
+}

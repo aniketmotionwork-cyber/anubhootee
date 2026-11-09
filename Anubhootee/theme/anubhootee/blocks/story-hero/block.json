@@ -1,0 +1,20 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "anubhootee/story-hero",
+	"title": "Story hero",
+	"category": "theme",
+	"icon": "format-image",
+	"description": "Featured photo, category, title and subtitle for a story.",
+	"textdomain": "anubhootee",
+	"supports": {
+		"html": false,
+		"multiple": true
+	},
+	"editorScript": "anubhootee-blocks-editor",
+	"render": "file:./render.php",
+	"usesContext": [
+		"postId",
+		"postType"
+	]
+}

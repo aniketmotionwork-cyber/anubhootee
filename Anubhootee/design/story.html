@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Monsoon Ghats Story</title>
+<meta name="description" content="A road diary through the Western Ghats in the monsoon. Anubhootee.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Mukta:wght@300;400;500;700&family=Tiro+Devanagari+Marathi&family=Newsreader:ital,opsz,wght@1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --turmeric: #F5B700;
+    --saffron: #FF6B1A;
+    --ink: #14110E;
+    --ink-2: #4A443D;
+    --muted: #8A8279;
+    --line: #E4DDD2;
+    --chalk: #FAF6EF;
+    --paper: #FFFDF9;
+    --body: 'Inter', system-ui, sans-serif;
+    --mr: 'Mukta', 'Tiro Devanagari Marathi', sans-serif;
+    --quote: 'Newsreader', Georgia, serif;
+    --pad: clamp(16px, 4vw, 56px);
+    --col: 680px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--chalk); color: var(--ink); font-family: var(--body); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  html[lang=mr] body { font-family: var(--mr); }
+
+  /* ---------- Reading progress ---------- */
+  .progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--turmeric); z-index: 40; }
+
+  /* ---------- Header ---------- */
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 30; display: flex; justify-content: space-between; align-items: center; padding: 24px var(--pad); color: var(--chalk); transition: background .3s, color .3s, padding .3s, border-color .3s; border-bottom: 1px solid transparent; }
+  header.solid { background: rgba(250,246,239,.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); color: var(--ink); padding-block: 16px; border-color: var(--line); }
+  .logo { display: inline-flex; flex-direction: column; line-height: 1; }
+  .logo .en { font-weight: 700; font-size: 15px; letter-spacing: .32em; }
+  .logo .road { height: 2px; margin-top: 7px; background: repeating-linear-gradient(90deg, var(--turmeric) 0 10px, transparent 10px 16px); }
+  .hright { display: flex; gap: 22px; align-items: center; font-size: 12px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; }
+  .hright a { opacity: .8; } .hright a:hover { opacity: 1; }
+  .lang button { padding: 4px 5px; opacity: .55; font-size: 12px; letter-spacing: .12em; }
+  .lang button.on { opacity: 1; text-decoration: underline; text-underline-offset: 6px; }
+  .lang .mr { font-family: var(--mr); letter-spacing: 0; font-size: 13px; }
+  @media (max-width: 640px) { .hright .hide-sm { display: none; } .logo .en { font-size: 13px; letter-spacing: .26em; } }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; height: 88vh; min-height: 520px; color: var(--chalk); overflow: hidden; }
+  .hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); animation: settle 2.4s cubic-bezier(.2,.7,.2,1) forwards; }
+  @keyframes settle { to { transform: scale(1); } }
+  .hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(20,17,14,.7) 0%, rgba(20,17,14,0) 55%), linear-gradient(180deg, rgba(20,17,14,.35), rgba(20,17,14,0) 22%); }
+  .hero .inner { position: absolute; left: var(--pad); right: var(--pad); bottom: clamp(32px, 7vh, 72px); z-index: 2; max-width: 1000px; }
+  .kicker { display: flex; gap: 10px; align-items: center; font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; opacity: .85; flex-wrap: wrap; }
+  .kicker .bar { width: 24px; height: 1px; background: currentColor; opacity: .7; }
+  html[lang=mr] .kicker { letter-spacing: 0; font-size: 14px; }
+  .hero h1 { font-weight: 400; font-size: clamp(40px, 6.6vw, 96px); line-height: 1; letter-spacing: -.045em; margin: 18px 0 12px; }
+  html[lang=mr] .hero h1 { letter-spacing: 0; line-height: 1.15; font-weight: 500; }
+  .hero .sub { font-family: var(--mr); font-weight: 300; font-size: clamp(18px, 2vw, 24px); opacity: .85; }
+  .credit { position: absolute; right: var(--pad); bottom: 16px; z-index: 2; font-size: 10px; opacity: .55; color: var(--chalk); }
+
+  /* ---------- Byline ---------- */
+  .byline { max-width: var(--col); margin: 0 auto; padding: 44px 16px 0; display: flex; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 22px; font-size: 13px; color: var(--muted); flex-wrap: wrap; }
+  .byline .who { display: flex; align-items: center; gap: 12px; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--ink); color: var(--turmeric); display: grid; place-items: center; font-family: var(--mr); font-size: 18px; }
+  .byline b { color: var(--ink); font-weight: 500; display: block; }
+  .share { display: flex; gap: 16px; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; }
+  .share a:hover { color: var(--ink); }
+
+  /* ---------- Article ---------- */
+  article { padding: 40px 16px 24px; }
+  article > * { max-width: var(--col); margin-left: auto; margin-right: auto; }
+  article p { font-size: 19px; line-height: 1.75; color: var(--ink-2); margin-bottom: 26px; font-weight: 400; }
+  html[lang=mr] article p { font-size: 20px; line-height: 1.85; }
+  article p.lede { font-size: 22px; color: var(--ink); line-height: 1.6; }
+  html[lang=mr] article p.lede { font-size: 23px; }
+  article h2 { font-weight: 500; font-size: 28px; letter-spacing: -.02em; margin: 56px auto 18px; color: var(--ink); }
+  html[lang=mr] article h2 { letter-spacing: 0; }
+  article h2 .n { display: block; font-size: 11px; letter-spacing: .22em; color: var(--muted); margin-bottom: 10px; font-weight: 500; }
+
+  blockquote { margin: 56px auto; padding-left: 24px; border-left: 2px solid var(--turmeric); }
+  blockquote p { font-family: var(--quote); font-style: italic; font-size: clamp(24px, 3vw, 32px) !important; line-height: 1.35 !important; color: var(--ink) !important; margin-bottom: 12px !important; }
+  html[lang=mr] blockquote p { font-family: var(--mr); font-style: normal; font-weight: 300; }
+  blockquote cite { font-style: normal; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+
+  figure.wide { max-width: 1160px; margin: 56px auto; }
+  figure.wide img { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+  figcaption { font-size: 13px; color: var(--muted); margin-top: 12px; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  @media (max-width: 760px) { figure.wide { margin-left: -16px; margin-right: -16px; } figcaption { padding: 0 16px; } }
+
+  .video { position: relative; aspect-ratio: 16/9; background: #000; overflow: hidden; margin: 48px auto 10px; cursor: pointer; }
+  .video img { width: 100%; height: 100%; object-fit: cover; opacity: .7; transition: opacity .3s, transform .6s; }
+  .video:hover img { opacity: .55; transform: scale(1.02); }
+  .video .play { position: absolute; inset: 0; display: grid; place-items: center; }
+  .video .play span { width: 72px; height: 72px; border-radius: 50%; border: 1px solid rgba(255,255,255,.8); display: grid; place-items: center; color: #fff; font-size: 18px; padding-left: 4px; backdrop-filter: blur(4px); }
+  .video .label { position: absolute; left: 16px; bottom: 14px; color: #fff; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; }
+
+  .tips { margin: 56px auto; border-top: 1px solid var(--ink); }
+  .tips h3 { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; font-weight: 500; padding: 16px 0; }
+  html[lang=mr] .tips h3 { letter-spacing: 0; font-size: 15px; }
+  .tips li { list-style: none; display: grid; grid-template-columns: 40px 1fr; gap: 8px; padding: 16px 0; border-top: 1px solid var(--line); font-size: 16px; line-height: 1.6; color: var(--ink-2); }
+  .tips li span { font-size: 12px; color: var(--muted); padding-top: 3px; font-variant-numeric: tabular-nums; }
+  .tips li b { color: var(--ink); font-weight: 500; }
+
+  .route { margin: 48px auto; display: grid; grid-template-columns: repeat(4, 1fr); border-block: 1px solid var(--line); }
+  .route div { padding: 18px 0; }
+  .route small { display: block; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+  html[lang=mr] .route small { letter-spacing: 0; font-size: 13px; }
+  .route b { font-weight: 500; font-size: 20px; }
+  @media (max-width: 600px) { .route { grid-template-columns: 1fr 1fr; } }
+
+  .tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 40px !important; }
+  .tags a { font-size: 12px; border: 1px solid var(--line); padding: 6px 12px; border-radius: 999px; color: var(--ink-2); }
+  .tags a:hover { border-color: var(--ink); color: var(--ink); }
+
+  /* ---------- Next story ---------- */
+  .next { position: relative; display: block; height: 70vh; min-height: 420px; margin-top: 80px; color: var(--chalk); overflow: hidden; }
+  .next img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+  .next:hover img { transform: scale(1.04); }
+  .next::after { content: ""; position: absolute; inset: 0; background: rgba(20,17,14,.45); transition: background .4s; }
+  .next:hover::after { background: rgba(20,17,14,.3); }
+  .next .inner { position: absolute; left: var(--pad); bottom: clamp(32px, 7vh, 64px); z-index: 2; }
+  .next small { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; opacity: .85; }
+  html[lang=mr] .next small { letter-spacing: 0; font-size: 14px; }
+  .next h2 { font-weight: 400; font-size: clamp(40px, 6vw, 88px); letter-spacing: -.045em; line-height: 1; margin-top: 14px; }
+  html[lang=mr] .next h2 { letter-spacing: 0; line-height: 1.15; }
+  .next .arrow { display: inline-block; transition: transform .3s; }
+  .next:hover .arrow { transform: translateX(10px); }
+
+  footer { background: var(--ink); color: rgba(250,246,239,.7); padding: 40px var(--pad); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+  footer .links { display: flex; gap: 22px; flex-wrap: wrap; }
+  footer a:hover { color: var(--chalk); }
+
+  /* Devanagari must never be letter-spaced */
+  html[lang=mr] [data-t], html[lang=mr] cite { letter-spacing: 0 !important; }
+  .reveal { opacity: 0; transform: translateY(16px); transition: opacity .8s ease, transform .8s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } .hero img { animation: none; transform: none; } }
+</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<header id="hdr">
+  <a class="logo" href="index.html" aria-label="Anubhootee home"><span class="en">ANUBHOOTEE</span><span class="road"></span></a>
+  <div class="hright">
+    <a href="index.html" class="hide-sm" data-t="back">← Chapters</a>
+    <div class="lang" role="group" aria-label="Language"><button class="on" data-lang="en">EN</button><button class="mr" data-lang="mr">मराठी</button></div>
+  </div>
+</header>
+
+<section class="hero">
+  <img src="img/road.jpg" alt="An empty highway under monsoon clouds with the Western Ghats in the distance">
+  <div class="inner">
+    <div class="kicker"><span data-t="cat">Road Travel</span><span class="bar"></span><span data-t="meta">Western Ghats · 9 min read</span></div>
+    <h1 data-t="title">Chasing the monsoon through the Western Ghats</h1>
+    <div class="sub">पावसाळ्यातला घाटमाथा</div>
+  </div>
+  <div class="credit">Photo: Mariappan Ramachandran · CC BY-SA 4.0</div>
+</section>
+
+<div class="byline">
+  <div class="who"><div class="avatar">अ</div><div><b>Anubhootee</b><span data-t="date">8 November 2026</span></div></div>
+  <div class="share"><a href="#">WhatsApp</a><a href="#">Instagram</a><a href="#" data-t="copy">Copy link</a></div>
+</div>
+
+<article>
+  <p class="lede reveal" data-t="p1">We left before sunrise, with the sky the colour of wet slate and the radio losing signal at every bend. The plan was simple: no plan, just the ghats, the rain and whatever the road decided to show us.</p>
+  <p class="reveal" data-t="p2">By the first climb the clouds had come down to meet us. Waterfalls appeared out of nowhere: thin silver threads on black rock, then roaring curtains that sprayed the windscreen as we passed. Every few kilometres there was a tapri with a tin roof, a kettle that never left the flame, and someone who wanted to know where we were going.</p>
+
+  <div class="route reveal">
+    <div><small data-t="r1">Distance</small><b data-t="r1v">186 km</b></div>
+    <div><small data-t="r2">Drive time</small><b data-t="r2v">6 hrs</b></div>
+    <div><small data-t="r3">Best season</small><b data-t="r3v">Jul – Sep</b></div>
+    <div><small data-t="r4">Chai stops</small><b data-t="r4v">11</b></div>
+  </div>
+
+  <h2 class="reveal"><span class="n">01</span><span data-t="h1">The road that disappears</span></h2>
+  <p class="reveal" data-t="p3">Visibility drops to a few metres near the top. You stop thinking about the destination and start thinking only about the next white line. It is slow and a little scary, and it is the most present we have felt in months.</p>
+
+  <blockquote class="reveal"><p data-t="q">"घाटात पाऊस नसतो, घाटच पाऊस होतो."</p><cite data-t="qc">A chai-stall owner near Malshej</cite></blockquote>
+
+  <figure class="wide reveal">
+    <img src="img/food.jpg" alt="A plate of Kolhapuri misal pav with farsan, onions and lemon">
+    <figcaption><span data-t="fc">Lunch stop: a fiery plate of misal pav, best eaten while the rain hammers the roof.</span><span>Photo: Ankushkr2020 · CC BY-SA 4.0</span></figcaption>
+  </figure>
+
+  <h2 class="reveal"><span class="n">02</span><span data-t="h2">Food is the real map</span></h2>
+  <p class="reveal" data-t="p4">Ask for directions and you will get a story. Ask for food and you will get a lunch invitation. The misal here is darker and hotter than the city version, served with a smile that dares you to finish it.</p>
+
+  <div class="video reveal" role="button" aria-label="Play the vlog">
+    <img src="img/road.jpg" alt="">
+    <div class="play"><span>▶</span></div>
+    <div class="label" data-t="vid">Watch the vlog · 14:20</div>
+  </div>
+
+  <div class="tips reveal">
+    <h3 data-t="tips">Important tips for this route</h3>
+    <ul>
+      <li><span>01</span><div data-t="t1"><b>Start early.</b> Fog thickens after 3 pm; plan to be off the ghat sections before dark.</div></li>
+      <li><span>02</span><div data-t="t2"><b>Check landslide alerts.</b> Follow local police and PWD updates during heavy rain weeks.</div></li>
+      <li><span>03</span><div data-t="t3"><b>Carry cash.</b> Many tapris and village eateries don't take UPI when the network drops.</div></li>
+      <li><span>04</span><div data-t="t4"><b>Respect the waterfalls.</b> Rocks are slippery and currents are stronger than they look.</div></li>
+    </ul>
+  </div>
+
+  <p class="reveal" data-t="p5">We reached the plateau just as the clouds broke. For ten minutes the whole valley was gold. Then the rain came back, and we turned the car around, already planning the next trip.</p>
+
+  <div class="tags reveal"><a href="#">#Monsoon</a><a href="#">#WesternGhats</a><a href="#">#RoadTrip</a><a href="#">#Maharashtra</a><a href="#">#MisalPav</a></div>
+</article>
+
+<a class="next" href="index.html">
+  <img src="img/food.jpg" alt="">
+  <div class="inner"><small data-t="nextk">Next story · Chav</small><h2><span data-t="nextt">Why Kolhapur's misal burns brighter</span> <span class="arrow">→</span></h2></div>
+</a>
+
+<footer>
+  <span>© 2026 Anubhootee</span>
+  <div class="links"><a href="#">YouTube</a><a href="#">Instagram</a><a href="#" data-t="shop">Shop</a><a href="#" data-t="about">About</a></div>
+</footer>
+
+<script>
+const MR = {
+  back: '← अध्याय', cat: 'प्रवास', meta: 'सह्याद्री · ९ मिनिटे वाचन',
+  title: 'सह्याद्रीत पावसाचा पाठलाग', date: '८ नोव्हेंबर २०२६', copy: 'लिंक कॉपी',
+  p1: 'सूर्योदयाआधीच आम्ही निघालो. आकाश ओल्या पाटीसारखं राखाडी होतं आणि प्रत्येक वळणावर रेडिओचा सिग्नल जात होता. योजना साधी होती: कुठलीच योजना नाही. फक्त घाट, पाऊस आणि रस्ता जे दाखवेल ते.',
+  p2: 'पहिल्या चढणीलाच ढग खाली उतरून आम्हाला भेटायला आले. कुठूनही धबधबे दिसू लागले: काळ्या कातळावर चांदीचे बारीक धागे, आणि मग गर्जणारे पडदे, जे जाताना काचेवर तुषार उडवत होते. दर काही किलोमीटरवर पत्र्याच्या छपराची एक टपरी, कधीही चुलीवरून न उतरणारी किटली, आणि आम्ही कुठे चाललो हे विचारणारं कोणीतरी.',
+  r1: 'अंतर', r1v: '१८६ किमी', r2: 'प्रवास वेळ', r2v: '६ तास', r3: 'योग्य ऋतू', r3v: 'जुलै – सप्टें', r4: 'चहाचे थांबे', r4v: '११',
+  h1: 'नाहीसा होणारा रस्ता',
+  p3: 'माथ्यावर पोहोचताच दृश्यमानता काही मीटरवर येते. तुम्ही ठिकाणाचा विचार सोडता आणि फक्त पुढच्या पांढऱ्या रेषेचा विचार करता. हे संथ आहे, थोडं भीतीदायकही, आणि गेल्या कित्येक महिन्यांत आम्ही इतके वर्तमानात कधीच नव्हतो.',
+  q: '"घाटात पाऊस नसतो, घाटच पाऊस होतो."', qc: 'माळशेजजवळचे एक चहावाले',
+  fc: 'जेवणाचा थांबा: झणझणीत मिसळपाव, छपरावर पाऊस कोसळत असताना खाण्यासाठी उत्तम.',
+  h2: 'खाद्य हाच खरा नकाशा',
+  p4: 'पत्ता विचारला तर गोष्ट मिळते. जेवण विचारलं तर जेवणाचं आमंत्रण मिळतं. इथली मिसळ शहरातल्यापेक्षा गडद आणि जास्त तिखट आहे, आणि ती संपवून दाखवा असं आव्हान देणाऱ्या हसण्यासोबत वाढली जाते.',
+  vid: 'व्लॉग पहा · १४:२०', tips: 'या मार्गासाठी महत्त्वाच्या टिप्स',
+  t1: '<b>लवकर निघा.</b> दुपारी ३ नंतर धुकं दाट होतं; अंधार पडण्याआधी घाट पार करा.',
+  t2: '<b>दरड कोसळण्याचे इशारे तपासा.</b> मुसळधार पावसाच्या आठवड्यांत स्थानिक पोलीस आणि PWD च्या सूचना पाहा.',
+  t3: '<b>रोख पैसे ठेवा.</b> नेटवर्क गेल्यावर अनेक टपऱ्या आणि गावातली हॉटेल्स UPI घेऊ शकत नाहीत.',
+  t4: '<b>धबधब्यांचा आदर करा.</b> खडक निसरडे असतात आणि प्रवाह दिसतो त्यापेक्षा जोरदार असतो.',
+  p5: 'ढग फाटले तेव्हा आम्ही पठारावर पोहोचलो. दहा मिनिटं संपूर्ण दरी सोनेरी झाली. मग पाऊस परत आला, आणि आम्ही गाडी वळवली: पुढच्या प्रवासाची आखणी करतच.',
+  nextk: 'पुढची गोष्ट · चव', nextt: 'कोल्हापूरची मिसळ इतकी झणझणीत का?', shop: 'दुकान', about: 'आमच्याबद्दल',
+};
+const EN = {};
+document.querySelectorAll('[data-t]').forEach(el => EN[el.dataset.t] = el.innerHTML);
+
+document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => {
+  const lang = b.dataset.lang, dict = lang === 'mr' ? MR : EN;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('[data-t]').forEach(el => { if (dict[el.dataset.t] != null) el.innerHTML = dict[el.dataset.t]; });
+}));
+
+const hdr = document.getElementById('hdr'), bar = document.getElementById('progress');
+function onScroll(){
+  const h = document.documentElement;
+  hdr.classList.toggle('solid', scrollY > innerHeight * 0.75);
+  bar.style.width = (scrollY / (h.scrollHeight - innerHeight) * 100) + '%';
+}
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>

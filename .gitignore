@@ -1,0 +1,19 @@
+# --- Paid brand fonts: licensed, not for public redistribution. Add them to anubhootee-web/public/fonts/brand/ locally. ---
+anubhootee-web/public/fonts/brand/*.otf
+anubhootee-web/public/fonts/brand/*.ttf
+anubhootee-web/public/fonts/brand/*.woff
+anubhootee-web/public/fonts/brand/*.woff2
+
+# --- Build output ---
+Anubhootee/theme/build/*.zip
+
+# --- Local SQLite database and generated files (the Laravel app has its own .gitignore too) ---
+anubhootee-web/database/*.sqlite
+anubhootee-web/storage/app/public/*
+!anubhootee-web/storage/app/public/.gitignore
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+*.log
+.claude/settings.local.json

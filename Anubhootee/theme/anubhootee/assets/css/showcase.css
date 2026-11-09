@@ -1,0 +1,61 @@
+/* Anubhootee: homepage chapter showcase */
+body:has(.anu-showcase) { overflow: hidden; background: #0B0907; }
+.anu-showcase {
+	--sc-pad: clamp(16px, 4vw, 56px);
+	--sc-chalk: #FAF4EA;
+	position: fixed; inset: 0; z-index: 1; color: var(--sc-chalk); background: #0B0907;
+	user-select: none; -webkit-user-select: none; margin: 0 !important; max-width: none !important;
+}
+.anu-sc-stage { position: absolute; inset: 0; touch-action: none; cursor: grab; }
+.anu-sc-stage.is-dragging { cursor: grabbing; }
+.anu-sc-gl, .anu-sc-fallback { position: absolute; inset: 0; width: 100%; height: 100%; }
+.anu-sc-fallback { display: none; }
+.anu-sc-fallback img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .8s ease; }
+.anu-sc-fallback img.is-on { opacity: 1; }
+.anu-showcase.no-webgl .anu-sc-gl { display: none; }
+.anu-showcase.no-webgl .anu-sc-fallback { display: block; }
+.anu-sc-shade { position: absolute; inset: 0; pointer-events: none; background:
+	linear-gradient(0deg, rgba(11,9,7,.62) 0%, rgba(11,9,7,0) 55%),
+	linear-gradient(180deg, rgba(11,9,7,.35) 0%, rgba(11,9,7,0) 22%); }
+
+/* Slides: only the current chapter is visible */
+.anu-sc-slides { position: absolute; left: var(--sc-pad); right: var(--sc-pad); top: 64%; z-index: 5; will-change: transform; pointer-events: none; transform: translateY(calc(var(--sc-gap, 60vh) / -2)); }
+.anu-sc-slide { height: var(--sc-gap, 60vh); display: flex; flex-direction: column; justify-content: center; opacity: 0; transition: opacity .5s ease; }
+.anu-sc-slide.is-active { opacity: 1; }
+.anu-sc-meta { display: flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; color: rgba(250,244,234,.75); margin-bottom: 14px; }
+.anu-sc-num { font-variant-numeric: tabular-nums; }
+.anu-sc-bar { width: 24px; height: 1px; background: rgba(250,244,234,.6); }
+.anu-showcase .anu-sc-title { color: var(--sc-chalk); font-family: var(--wp--preset--font-family--body, 'Inter', sans-serif); font-weight: 500; font-size: clamp(48px, 8vw, 120px); line-height: .95; letter-spacing: -.045em; margin: 0; }
+.anu-sc-deva { font-family: var(--wp--preset--font-family--marathi, 'Mukta', sans-serif); font-weight: 300; font-size: clamp(18px, 1.8vw, 24px); color: rgba(250,244,234,.8); margin-top: 6px; letter-spacing: 0; }
+.anu-sc-more { pointer-events: auto; display: inline-flex; align-items: center; gap: 12px; margin-top: 26px; font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; width: max-content; color: var(--sc-chalk) !important; text-decoration: none !important; }
+.anu-sc-line { width: 20px; height: 1px; background: var(--sc-chalk); transition: width .3s; }
+.anu-sc-more:hover .anu-sc-line { width: 40px; }
+.anu-sc-slide:not(.is-active) .anu-sc-more { pointer-events: none; }
+
+/* Progress lines */
+.anu-sc-progress { position: absolute; right: var(--sc-pad); top: 50%; transform: translateY(-50%); z-index: 6; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+.anu-sc-progress button { background: none; border: 0; padding: 4px 6px; cursor: pointer; }
+.anu-sc-progress span { display: block; width: 1.5px; height: 16px; background: rgba(250,244,234,.35); transition: height .3s, background .3s; }
+.anu-sc-progress .is-on span { background: var(--sc-chalk); height: 36px; }
+
+.anu-sc-counter, .anu-sc-hint { position: absolute; bottom: 28px; z-index: 6; font-size: 11px; font-weight: 500; letter-spacing: .22em; color: rgba(250,244,234,.75); text-transform: uppercase; }
+.anu-sc-counter { left: var(--sc-pad); font-variant-numeric: tabular-nums; }
+.anu-sc-counter b { color: var(--sc-chalk); font-weight: 500; }
+.anu-sc-hint { right: var(--sc-pad); }
+.anu-sc-credit { position: absolute; right: var(--sc-pad); bottom: 52px; z-index: 6; font-size: 10px; opacity: .45; text-align: right; max-width: 70vw; }
+
+/* Loader */
+.anu-sc-loader { position: absolute; inset: 0; z-index: 20; background: #0B0907; display: grid; place-items: center; transition: opacity .8s ease, visibility .8s; }
+.anu-sc-loader.is-done { opacity: 0; visibility: hidden; }
+.anu-sc-loader__word { font-family: var(--wp--preset--font-family--marathi, 'Mukta', sans-serif); font-weight: 300; font-size: clamp(40px, 8vw, 80px); line-height: 1; }
+.anu-sc-loader__road { height: 2px; margin-top: 12px; width: 0; background: repeating-linear-gradient(90deg, #F5B700 0 22px, transparent 22px 34px); transition: width .3s; }
+
+/* Marathi: no letter-spacing */
+.anu-lang-mr .anu-showcase * { letter-spacing: 0 !important; }
+.anu-lang-mr .anu-sc-meta, .anu-lang-mr .anu-sc-more { font-size: 13px; }
+
+@media (max-width: 760px) {
+	.anu-showcase .anu-sc-title { font-size: clamp(44px, 14vw, 72px); }
+	.anu-sc-counter, .anu-sc-hint { bottom: 22px; }
+	.anu-sc-credit { bottom: 48px; }
+}

@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "theme-files",
+      "runtimeExecutable": "powershell",
+      "runtimeArgs": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "Anubhootee/theme/dev/serve.ps1",
+        "4322"
+      ],
+      "port": 4322
+    }
+  ]
+}

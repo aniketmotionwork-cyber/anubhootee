@@ -1,0 +1,23 @@
+/*
+ * Anubhootee brand display fonts (Latin only: Marathi/Devanagari stays in Mukta).
+ * Loaded on the /brand page. To use one elsewhere, link this file and set font-family.
+ * These are licensed marketplace fonts: keep your licence for each one with the project.
+ */
+@font-face { font-family: 'Raga'; src: url('raga.woff2') format('woff2'); font-display: swap; }
+
+@font-face { font-family: 'Contrue Sans'; src: url('contrue-sans.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'Contrue Sans Blur'; src: url('contrue-sans-blur.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'Contrue Blackletter'; src: url('contrue-blackletter.woff2') format('woff2'); font-display: swap; }
+@font-face { font-family: 'Contrue Blackletter Blur'; src: url('contrue-blackletter-blur.woff2') format('woff2'); font-display: swap; }
+
+@font-face { font-family: 'NY New'; src: url('new-york-new.otf') format('opentype'); font-display: swap; }
+@font-face { font-family: 'NY York'; src: url('new-york-york.otf') format('opentype'); font-display: swap; }
+
+@font-face { font-family: 'Duobles Glomaflow'; src: url('duobles-glomaflow.woff') format('woff'); font-display: swap; }
+@font-face { font-family: 'Duobles Glomaflow Handwritten'; src: url('duobles-glomaflow-handwritten.woff') format('woff'); font-display: swap; }
+
+@font-face { font-family: 'Bunga Mekar Display'; src: url('bunga-mekar-display.otf') format('opentype'); font-display: swap; }
+@font-face { font-family: 'Bunga Mekar Script'; src: url('bunga-mekar-script.otf') format('opentype'); font-display: swap; }
+
+@font-face { font-family: 'Ashanti Spirit'; src: url('ashanti-spirit-regular.otf') format('opentype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Ashanti Spirit'; src: url('ashanti-spirit-bold.otf') format('opentype'); font-weight: 700; font-display: swap; }

@@ -1,0 +1,24 @@
+{
+	"$schema": "https://playground.wordpress.net/blueprint-schema.json",
+	"landingPage": "/",
+	"preferredVersions": { "php": "8.2", "wp": "latest" },
+	"steps": [
+		{ "step": "login", "username": "admin", "password": "password" },
+		{ "step": "installTheme", "themeData": { "resource": "url", "url": "http://localhost:4322/build/anubhootee.zip" }, "options": { "activate": true } },
+		{ "step": "mkdir", "path": "/wordpress/wp-content/anu-dev" },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/anu-dev/setup.php", "data": { "resource": "url", "url": "http://localhost:4322/dev/setup.php" } },
+		{ "step": "runPHP", "code": "<?php require '/wordpress/wp-content/anu-dev/setup.php';" },
+		{ "step": "installPlugin", "pluginData": { "resource": "wordpress.org/plugins", "slug": "polylang" }, "options": { "activate": true } },
+		{ "step": "installPlugin", "pluginData": { "resource": "wordpress.org/plugins", "slug": "seo-by-rank-math" }, "options": { "activate": true } },
+		{ "step": "installPlugin", "pluginData": { "resource": "wordpress.org/plugins", "slug": "litespeed-cache" }, "options": { "activate": true } },
+		{ "step": "installPlugin", "pluginData": { "resource": "wordpress.org/plugins", "slug": "woocommerce" }, "options": { "activate": true } },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/anu-dev/content.php", "data": { "resource": "url", "url": "http://localhost:4322/dev/content.php" } },
+		{ "step": "runPHP", "code": "<?php require '/wordpress/wp-content/anu-dev/content.php';" },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/anu-dev/store.php", "data": { "resource": "url", "url": "http://localhost:4322/dev/store.php" } },
+		{ "step": "runPHP", "code": "<?php require '/wordpress/wp-content/anu-dev/store.php';" },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/anu-dev/menus.php", "data": { "resource": "url", "url": "http://localhost:4322/dev/menus.php" } },
+		{ "step": "runPHP", "code": "<?php require '/wordpress/wp-content/anu-dev/menus.php';" },
+		{ "step": "writeFile", "path": "/wordpress/wp-content/anu-dev/languages.php", "data": { "resource": "url", "url": "http://localhost:4322/dev/languages.php" } },
+		{ "step": "runPHP", "code": "<?php require '/wordpress/wp-content/anu-dev/languages.php';" }
+	]
+}

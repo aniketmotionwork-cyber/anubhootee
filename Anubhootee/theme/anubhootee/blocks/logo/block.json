@@ -1,0 +1,16 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "anubhootee/logo",
+	"title": "Anubhootee logo",
+	"category": "theme",
+	"icon": "admin-site",
+	"description": "Site name with the road-line mark.",
+	"textdomain": "anubhootee",
+	"supports": {
+		"html": false,
+		"multiple": true
+	},
+	"editorScript": "anubhootee-blocks-editor",
+	"render": "file:./render.php"
+}

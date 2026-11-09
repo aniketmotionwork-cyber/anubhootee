@@ -1,0 +1,367 @@
+@import 'tailwindcss';
+@import './showcase.css';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/* =========================================================
+   Anubhootee brand tokens (usable as Tailwind utilities too:
+   bg-saffron, text-ink, font-marathi …)
+   ========================================================= */
+/* Headline font: New York "New" (tall condensed capitals, Latin only).
+   To try another brand font, change the file here and the name in --font-display. */
+@font-face {
+	font-family: 'NY New';
+	src: url('/fonts/brand/new-york-new.otf') format('opentype');
+	font-display: swap;
+}
+
+@theme {
+	--font-display: 'NY New', 'Mukta', 'Inter', sans-serif;
+	--color-ink: #14110E;
+	--color-ink-2: #4A443D;
+	--color-muted: #8A8279;
+	--color-line: #E4DDD2;
+	--color-chalk: #FAF6EF;
+	--color-paper: #FFFDF9;
+	--color-turmeric: #F5B700;
+	--color-saffron: #FF6B1A;
+	--color-indigo: #1E1B4B;
+	--font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+	--font-marathi: 'Mukta', 'Tiro Devanagari Marathi', sans-serif;
+	--font-quote: 'Newsreader', Georgia, serif;
+}
+
+:root {
+	--anu-ink: var(--color-ink);
+	--anu-ink-2: var(--color-ink-2);
+	--anu-muted: var(--color-muted);
+	--anu-line: var(--color-line);
+	--anu-chalk: var(--color-chalk);
+	--anu-turmeric: var(--color-turmeric);
+	--anu-saffron: var(--color-saffron);
+	--anu-mr: var(--font-marathi);
+	--anu-pad: max(16px, 3vw);
+}
+
+@layer base {
+	html { -webkit-text-size-adjust: 100%; }
+	body { background: var(--anu-chalk); color: var(--anu-ink); font-family: var(--font-sans); font-size: 17px; line-height: 1.7; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+	a { color: inherit; }
+	::selection { background: var(--anu-turmeric); color: var(--anu-ink); }
+	:focus-visible { outline: 2px solid var(--anu-saffron); outline-offset: 3px; }
+}
+
+/* Marathi pages: font set further down (New York, with Devanagari falling back to Mukta) */
+/* Devanagari must never be letter-spaced: it breaks conjuncts */
+.anu-lang-mr *, :lang(mr) { letter-spacing: 0 !important; }
+
+.anu-skip { position: absolute; left: -9999px; top: 8px; z-index: 200; background: var(--anu-ink); color: var(--anu-chalk); padding: 8px 14px; }
+.anu-skip:focus { left: 8px; }
+
+/* ---------- Reading progress ---------- */
+.anu-progress { position: fixed; top: 0; left: 0; height: 2px; width: 0; background: var(--anu-turmeric); z-index: 100; pointer-events: none; }
+
+/* ---------- Header ---------- */
+.anu-header { position: relative; z-index: 50; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px var(--anu-pad); border-bottom: 1px solid var(--anu-line); background: var(--anu-chalk); transition: background .3s, color .3s, padding .3s, border-color .3s; }
+.anu-header.is-overlay { position: fixed; top: 0; left: 0; right: 0; color: var(--anu-chalk); background: transparent; border-color: transparent; }
+/* Homepage hero: hairline under the nav, inset to the page margins */
+body:has(.anu-showcase) .anu-header { border-bottom: 0; }
+body:has(.anu-showcase) .anu-header::after { content: ""; position: absolute; left: var(--anu-pad); right: var(--anu-pad); bottom: 0; height: 1px; background: rgba(250,244,234,.16); }
+body:has(.anu-showcase) .anu-nav { gap: 30px; font-size: 11px; letter-spacing: .2em; }
+.anu-lang__icon { width: 16px; height: 16px; opacity: .7; margin-right: 4px; align-self: center; }
+.anu-header.is-overlay.is-solid { background: rgba(250,246,239,.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); color: var(--anu-ink); padding-block: 14px; border-color: var(--anu-line); }
+
+.anu-logo { display: inline-flex; flex-direction: column; line-height: 1; text-decoration: none; color: inherit; }
+.anu-logo__name { font-weight: 700; font-size: 15px; letter-spacing: .32em; text-transform: uppercase; }
+.anu-logo__road { height: 2px; margin-top: 7px; background: repeating-linear-gradient(90deg, var(--anu-turmeric) 0 10px, transparent 10px 16px); }
+.anu-logo:hover .anu-logo__road { animation: anu-drive .6s linear infinite; }
+@keyframes anu-drive { to { background-position: 16px 0; } }
+
+.anu-header-right { display: flex; align-items: center; gap: 22px; }
+.anu-nav { display: flex; gap: 26px; font-size: 12px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; }
+.anu-nav a { text-decoration: none; opacity: .8; padding: 4px 0; border-bottom: 1px solid transparent; }
+.anu-nav a:hover { opacity: 1; }
+.anu-nav a[aria-current="page"] { opacity: 1; border-color: currentColor; }
+.anu-icon-btn { display: inline-grid; place-items: center; width: 34px; height: 34px; border: 0; background: none; color: inherit; cursor: pointer; text-decoration: none; opacity: .85; }
+.anu-icon-btn:hover { opacity: 1; }
+.anu-icon-btn svg { width: 19px; height: 19px; }
+.anu-burger { display: none; }
+
+.anu-lang { display: flex; gap: 2px; font-size: 12px; font-weight: 500; letter-spacing: .12em; }
+.anu-lang a { padding: 4px 5px; opacity: .55; text-decoration: none; }
+.anu-lang a.is-current { opacity: 1; text-decoration: underline; text-underline-offset: 6px; }
+.anu-lang a[lang=mr] { font-family: var(--anu-mr); font-size: 13px; letter-spacing: 0; }
+
+/* Mobile menu */
+.anu-menu { position: fixed; inset: 0; z-index: 120; background: var(--anu-ink); color: var(--anu-chalk); padding: 24px var(--anu-pad); display: flex; flex-direction: column; overflow-y: auto; }
+.anu-menu__top { display: flex; justify-content: space-between; align-items: center; }
+.anu-menu nav { display: flex; flex-direction: column; gap: 4px; margin-top: 48px; }
+.anu-menu nav a { font-size: clamp(32px, 9vw, 56px); font-weight: 500; letter-spacing: -.03em; line-height: 1.15; text-decoration: none; }
+.anu-menu nav a small { display: block; font-family: var(--anu-mr); font-size: 15px; font-weight: 300; opacity: .6; letter-spacing: 0; margin-bottom: 10px; }
+.anu-menu__foot { margin-top: auto; padding-top: 40px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; opacity: .8; }
+
+/* Search overlay */
+.anu-search { position: fixed; inset: 0; z-index: 130; background: rgba(20,17,14,.96); color: var(--anu-chalk); display: grid; place-items: center; padding: var(--anu-pad); }
+.anu-search form { width: min(760px, 100%); }
+.anu-search input { width: 100%; background: transparent; border: 0; border-bottom: 1px solid rgba(250,246,239,.4); color: var(--anu-chalk); font-size: clamp(28px, 5vw, 56px); letter-spacing: -.03em; padding: 8px 0; outline: none; }
+.anu-search input::placeholder { color: rgba(250,246,239,.35); }
+.anu-search p { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; opacity: .6; margin-top: 16px; }
+.anu-search .anu-icon-btn { position: absolute; top: 24px; right: var(--anu-pad); color: var(--anu-chalk); }
+
+@media (max-width: 960px) {
+	.anu-nav { display: none; }
+	.anu-burger { display: inline-grid; }
+}
+@media (max-width: 640px) {
+	.anu-logo__name { font-size: 13px; letter-spacing: .26em; }
+	.anu-header { padding: 16px; }
+	.anu-header-right { gap: 8px; }
+}
+
+/* ---------- Footer ---------- */
+.anu-footer { background: var(--anu-ink); color: rgba(250,246,239,.7); padding: 72px var(--anu-pad) 40px; }
+.anu-footer a { color: rgba(250,246,239,.7); text-decoration: none; }
+.anu-footer a:hover { color: var(--anu-chalk); }
+.anu-footer__grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 48px; }
+.anu-footer h2 { color: var(--anu-chalk); font-size: clamp(28px, 3.4vw, 44px); font-weight: 400; letter-spacing: -.035em; line-height: 1.1; margin: 0 0 18px; }
+.anu-footer h3 { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: rgba(250,246,239,.45); margin: 0 0 16px; font-weight: 500; }
+.anu-footer ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; font-size: 15px; }
+.anu-sub { display: flex; max-width: 420px; border-bottom: 1px solid rgba(250,246,239,.35); }
+.anu-sub input { flex: 1; min-width: 0; background: transparent; border: 0; color: var(--anu-chalk); font: inherit; font-size: 16px; padding: 10px 0; outline: none; }
+.anu-sub input::placeholder { color: rgba(250,246,239,.4); }
+.anu-sub button { background: none; border: 0; color: var(--anu-turmeric); font: inherit; font-size: 12px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; cursor: pointer; padding: 0 0 0 16px; }
+.anu-footer__note { font-size: 13px; color: var(--anu-turmeric); margin-top: 10px; }
+.anu-footer__bottom { margin-top: 64px; padding-top: 24px; border-top: 1px solid rgba(250,246,239,.12); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 28px; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+.anu-footer__bottom nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
+@media (max-width: 860px) { .anu-footer__grid { grid-template-columns: 1fr 1fr; } .anu-footer__intro { grid-column: 1 / -1; } }
+
+/* ---------- Story hero ---------- */
+.anu-hero { position: relative; height: 88vh; min-height: 520px; color: var(--anu-chalk); overflow: hidden; background: var(--anu-ink); }
+.anu-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scale(1.06); animation: anu-settle 2.4s cubic-bezier(.2,.7,.2,1) forwards; }
+@keyframes anu-settle { to { transform: scale(1); } }
+.anu-hero::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(20,17,14,.72) 0%, rgba(20,17,14,0) 55%), linear-gradient(180deg, rgba(20,17,14,.4), rgba(20,17,14,0) 22%); }
+.anu-hero__inner { position: absolute; left: var(--anu-pad); right: var(--anu-pad); bottom: clamp(32px, 7vh, 72px); z-index: 2; max-width: 1000px; }
+.anu-kicker { display: flex; gap: 10px; align-items: center; font-size: 11px; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; opacity: .9; flex-wrap: wrap; }
+.anu-kicker a { text-decoration: none; }
+.anu-kicker__bar { width: 24px; height: 1px; background: currentColor; opacity: .7; }
+.anu-hero h1 { font-weight: 400; font-size: clamp(40px, 6.6vw, 96px); line-height: 1; letter-spacing: -.045em; margin: 18px 0 12px; }
+.anu-lang-mr .anu-hero h1 { line-height: 1.15; font-weight: 500; }
+.anu-hero__sub { font-family: var(--anu-mr); font-weight: 300; font-size: clamp(18px, 2vw, 24px); opacity: .88; margin: 0; }
+.anu-hero__credit { position: absolute; right: var(--anu-pad); bottom: 16px; z-index: 2; font-size: 10px; opacity: .55; margin: 0; }
+/* Depth effect on story heroes: photo → shade → title (back) → subject cutout (+ same shade, masked) → labels (front) */
+.anu-hero > img { z-index: 0; }
+.anu-hero::after { z-index: 1; }
+.anu-hero__inner { z-index: 4; }
+.anu-hero__inner--back { z-index: 2; }
+.anu-hero__inner--back .anu-kicker, .anu-hero__inner--back .anu-hero__sub { visibility: hidden; }
+.anu-hero.has-depth:not(.no-depth) .anu-hero__inner--front h1 { visibility: hidden; }
+.anu-hero__fg { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.anu-hero__fg i { position: absolute; inset: 0; background: linear-gradient(0deg, rgba(20,17,14,.72) 0%, rgba(20,17,14,0) 55%), linear-gradient(180deg, rgba(20,17,14,.4), rgba(20,17,14,0) 22%);
+	-webkit-mask-size: cover; mask-size: cover; -webkit-mask-position: center; mask-position: center; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+	transform: scale(1.06); animation: anu-settle 2.4s cubic-bezier(.2,.7,.2,1) forwards; }
+.anu-hero.no-depth .anu-hero__fg, .anu-hero.no-depth .anu-hero__inner--back { display: none; }
+.anu-hero__credit { z-index: 4; }
+.anu-hero.no-image { height: auto; min-height: 0; padding: 160px 0 64px; }
+.anu-hero.no-image::after { display: none; }
+.anu-hero.no-image .anu-hero__inner { position: relative; left: auto; right: auto; bottom: auto; margin: 0 var(--anu-pad); }
+
+/* ---------- Byline ---------- */
+.anu-byline { max-width: 712px; margin: 0 auto; padding: 44px 16px 22px; display: flex; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid var(--anu-line); font-size: 13px; color: var(--anu-muted); flex-wrap: wrap; line-height: 1.4; }
+.anu-byline__who { display: flex; align-items: center; gap: 12px; }
+.anu-byline__avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--anu-ink); color: var(--anu-turmeric); display: grid; place-items: center; font-family: var(--anu-mr); font-size: 18px; }
+.anu-byline b { color: var(--anu-ink); font-weight: 500; display: block; }
+.anu-share { display: flex; gap: 16px; font-size: 11px; letter-spacing: .18em; text-transform: uppercase; }
+.anu-share a, .anu-share button { color: var(--anu-muted); text-decoration: none; background: none; border: 0; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; padding: 0; }
+.anu-share a:hover, .anu-share button:hover { color: var(--anu-ink); }
+
+/* ---------- Article ---------- */
+.anu-article { max-width: 712px; margin: 0 auto; padding: 40px 16px 24px; }
+.anu-article > * + * { margin-top: 1.3em; }
+.anu-article p { font-size: 19px; line-height: 1.75; color: var(--anu-ink-2); }
+.anu-lang-mr .anu-article p { font-size: 20px; line-height: 1.85; }
+.anu-article > p:first-child { font-size: 22px; line-height: 1.6; color: var(--anu-ink); }
+.anu-article h2 { font-size: clamp(26px, 3vw, 34px); font-weight: 500; letter-spacing: -.025em; line-height: 1.2; margin-top: 56px; color: var(--anu-ink); }
+.anu-article h3 { font-size: 22px; font-weight: 500; letter-spacing: -.015em; margin-top: 40px; }
+.anu-article a { color: var(--anu-ink); text-decoration-color: var(--anu-turmeric); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+.anu-article ul, .anu-article ol { padding-left: 1.3em; font-size: 18px; color: var(--anu-ink-2); }
+.anu-article ul { list-style: disc; } .anu-article ol { list-style: decimal; }
+.anu-article li + li { margin-top: .4em; }
+.anu-article blockquote { margin: 56px 0; padding: 0; border: 0; font-family: var(--font-quote); font-style: italic; font-size: clamp(26px, 3.2vw, 36px); line-height: 1.3; letter-spacing: -.01em; }
+.anu-article blockquote p { font-size: inherit; line-height: inherit; color: var(--anu-ink); }
+.anu-lang-mr .anu-article blockquote, .anu-article blockquote :lang(mr) { font-family: var(--anu-mr); font-style: normal; font-weight: 300; }
+.anu-article img { width: 100%; height: auto; margin: 48px 0; }
+.anu-article figure { margin: 56px 0; }
+.anu-article figcaption { color: var(--anu-muted); font-size: 13px; margin-top: 10px; }
+
+/* Facts row */
+.anu-route { display: grid; grid-template-columns: repeat(var(--cols, 4), 1fr); border-block: 1px solid var(--anu-line); margin: 48px 0; }
+.anu-route > div { padding: 18px 12px 18px 0; }
+.anu-route dt { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--anu-muted); margin-bottom: 4px; }
+.anu-route dd { font-size: 20px; font-weight: 500; color: var(--anu-ink); margin: 0; line-height: 1.3; }
+@media (max-width: 600px) { .anu-route { grid-template-columns: 1fr 1fr; } }
+
+/* Tips */
+.anu-tips { border-top: 1px solid var(--anu-ink); margin: 56px 0; }
+.anu-tips h3 { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; font-weight: 500; padding: 16px 0; margin: 0; }
+.anu-tips ol { list-style: none; padding: 0; margin: 0; counter-reset: tip; }
+.anu-tips li { counter-increment: tip; position: relative; padding: 16px 0 16px 48px; margin: 0; border-top: 1px solid var(--anu-line); font-size: 16px; line-height: 1.6; color: var(--anu-ink-2); }
+.anu-tips li::before { content: counter(tip, decimal-leading-zero); position: absolute; left: 0; top: 19px; font-size: 12px; color: var(--anu-muted); font-variant-numeric: tabular-nums; }
+.anu-tips li strong { color: var(--anu-ink); font-weight: 500; }
+
+/* Video */
+.anu-video { position: relative; aspect-ratio: 16 / 9; background: var(--anu-ink); margin: 48px 0; }
+.anu-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.anu-video--reel { aspect-ratio: 9 / 16; max-width: 400px; margin-inline: auto; }
+.anu-video--empty { display: grid; place-items: center; text-align: center; color: var(--anu-chalk); padding: 24px; }
+.anu-video--empty span { display: block; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; opacity: .6; margin-top: 8px; }
+.anu-video--empty b { font-size: 22px; font-weight: 500; }
+.anu-wide { max-width: 1000px; margin-inline: auto; padding-inline: 16px; }
+
+/* Tags */
+.anu-tags { max-width: 712px; margin: 0 auto; padding: 8px 16px 0; display: flex; gap: 8px; flex-wrap: wrap; }
+.anu-tags a { font-size: 12px; border: 1px solid var(--anu-line); padding: 6px 12px; border-radius: 999px; color: var(--anu-ink-2); text-decoration: none; }
+.anu-tags a:hover { border-color: var(--anu-ink); color: var(--anu-ink); }
+
+/* ---------- Next story ---------- */
+.anu-next { position: relative; display: block; height: 70vh; min-height: 420px; margin-top: 80px; color: var(--anu-chalk); overflow: hidden; text-decoration: none; background: var(--anu-ink); }
+.anu-next img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s cubic-bezier(.2,.7,.2,1); }
+.anu-next:hover img { transform: scale(1.04); }
+.anu-next::after { content: ""; position: absolute; inset: 0; background: rgba(20,17,14,.45); transition: background .4s; }
+.anu-next:hover::after { background: rgba(20,17,14,.3); }
+.anu-next__inner { position: absolute; left: var(--anu-pad); right: var(--anu-pad); bottom: clamp(32px, 7vh, 64px); z-index: 2; }
+.anu-next small { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; opacity: .85; }
+.anu-next__title { display: block; font-weight: 400; font-size: clamp(36px, 6vw, 88px); letter-spacing: -.045em; line-height: 1.02; margin-top: 14px; }
+.anu-lang-mr .anu-next__title { line-height: 1.15; }
+.anu-next__arrow { display: inline-block; transition: transform .3s; }
+.anu-next:hover .anu-next__arrow { transform: translateX(10px); }
+
+/* ---------- Archive / grid ---------- */
+.anu-archive { max-width: 1160px; margin: 0 auto; padding: 64px 16px 96px; }
+.anu-eyebrow { font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--anu-muted); margin: 0 0 14px; }
+.anu-archive h1 { font-size: clamp(44px, 7vw, 96px); font-weight: 400; letter-spacing: -.05em; line-height: .95; margin: 0 0 14px; }
+.anu-lang-mr .anu-archive h1 { line-height: 1.1; font-weight: 500; }
+.anu-archive__desc { color: var(--anu-muted); max-width: 560px; font-size: 17px; margin: 0; }
+.anu-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 32px; }
+.anu-filters a { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; padding: 8px 14px; border: 1px solid var(--anu-line); text-decoration: none; color: var(--anu-ink-2); }
+.anu-filters a.is-on, .anu-filters a:hover { background: var(--anu-ink); border-color: var(--anu-ink); color: var(--anu-chalk); }
+.anu-grid { margin-top: 48px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px 24px; }
+@media (max-width: 1024px) { .anu-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 640px) { .anu-grid { grid-template-columns: 1fr; } }
+.anu-card { display: block; text-decoration: none; }
+.anu-card__img { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #E9E1D4; margin-bottom: 16px; }
+.anu-card__img img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; transition: transform 1s cubic-bezier(.2,.7,.2,1); }
+.anu-card:hover .anu-card__img img { transform: scale(1.04); }
+.anu-card__play { position: absolute; left: 14px; bottom: 14px; display: inline-flex; align-items: center; gap: 8px; background: var(--anu-chalk); color: var(--anu-ink); font-size: 10px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; padding: 7px 10px; }
+.anu-card__meta { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--anu-muted); margin: 0 0 6px; }
+.anu-card h3 { font-size: 23px; font-weight: 500; letter-spacing: -.02em; line-height: 1.2; margin: 0; }
+.anu-lang-mr .anu-card h3 { line-height: 1.35; }
+.anu-card__sub { font-family: var(--anu-mr); font-weight: 300; color: var(--anu-ink-2); font-size: 16px; margin: 6px 0 0; }
+.anu-empty { margin-top: 48px; color: var(--anu-muted); }
+
+/* Pagination (Laravel default markup) */
+.anu-pager { margin-top: 64px; }
+.anu-pager nav > div:first-child { display: none; }
+.anu-pager [aria-current] span, .anu-pager a, .anu-pager span[aria-disabled] span { border-radius: 0 !important; }
+
+/* ---------- Pages ---------- */
+.anu-page { max-width: 760px; margin: 0 auto; padding: 72px 16px 96px; }
+.anu-page h1 { font-size: clamp(44px, 7vw, 88px); font-weight: 400; letter-spacing: -.05em; line-height: .95; margin: 0 0 40px; }
+.anu-lang-mr .anu-page h1 { line-height: 1.15; font-weight: 500; }
+.anu-page .anu-article { padding: 0; max-width: none; }
+.anu-page__cover { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin: 0 0 40px; }
+
+/* Forms */
+.anu-form { display: grid; gap: 20px; margin-top: 40px; }
+.anu-form label { display: grid; gap: 6px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--anu-muted); }
+.anu-form input, .anu-form textarea { font: inherit; font-size: 17px; letter-spacing: 0; text-transform: none; color: var(--anu-ink); background: var(--color-paper); border: 1px solid var(--anu-line); padding: 12px 14px; border-radius: 0; outline: none; }
+.anu-form input:focus, .anu-form textarea:focus { border-color: var(--anu-ink); }
+.anu-form .anu-hp { position: absolute; left: -9999px; }
+.anu-form__row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media (max-width: 640px) { .anu-form__row { grid-template-columns: 1fr; } }
+.anu-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; background: var(--anu-ink); color: var(--anu-chalk); border: 1px solid var(--anu-ink); font: inherit; font-size: 12px; font-weight: 500; letter-spacing: .18em; text-transform: uppercase; padding: 15px 26px; cursor: pointer; text-decoration: none; justify-self: start; transition: background .25s, color .25s, border-color .25s; }
+.anu-btn:hover { background: var(--anu-saffron); border-color: var(--anu-saffron); color: var(--anu-ink); }
+.anu-alert { padding: 14px 16px; border-left: 3px solid var(--anu-turmeric); background: #FFF6DA; font-size: 15px; }
+.anu-alert--error { border-left-color: #C0392B; background: #FBEAE8; }
+.anu-field-error { color: #C0392B; font-size: 13px; letter-spacing: 0; text-transform: none; }
+
+/* ---------- 404 ---------- */
+.anu-404 { min-height: 70vh; display: grid; align-content: center; }
+
+/* ---------- Reveal on scroll ---------- */
+.anu-js .anu-article > * { opacity: 0; transform: translateY(16px); transition: opacity .8s ease, transform .8s ease; }
+.anu-js .anu-article > .is-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+	.anu-js .anu-article > * { opacity: 1; transform: none; }
+	.anu-hero img { animation: none; transform: none; }
+}
+
+[x-cloak] { display: none !important; }
+
+/* =========================================================
+   Headline font everywhere: every big heading uses --font-display.
+   Devanagari in a heading falls back to Mukta automatically.
+   The font has one weight, so faux-bold is switched off.
+   ========================================================= */
+.anu-showcase .anu-sc-title,
+.anu-hero h1,
+.anu-archive h1,
+.anu-page h1,
+.anu-next__title,
+.anu-card h3,
+.anu-article h2,
+.anu-footer h2,
+.anu-menu nav a,
+.anu-404 h1 {
+	font-family: var(--font-display);
+	font-weight: 400;
+	font-synthesis: none;
+	letter-spacing: .005em;
+	text-transform: uppercase;
+}
+/* Condensed capitals need a little more size and less leading than Inter did */
+.anu-hero h1 { font-size: clamp(52px, 8.4vw, 132px); line-height: .92; }
+.anu-archive h1, .anu-page h1 { font-size: clamp(56px, 9vw, 128px); line-height: .9; }
+.anu-next__title { font-size: clamp(44px, 7.4vw, 112px); line-height: .92; }
+.anu-card h3 { font-size: 30px; line-height: 1.02; }
+.anu-article h2 { font-size: clamp(32px, 3.8vw, 44px); line-height: 1; }
+.anu-footer h2 { font-size: clamp(34px, 4.2vw, 56px); line-height: 1; }
+.anu-menu nav a { font-size: clamp(40px, 11vw, 68px); line-height: 1.02; }
+/* =========================================================
+   New York everywhere except reading text.
+   Paragraphs, lists, form fields and descriptions keep Inter (with Mukta for Devanagari).
+   ========================================================= */
+:root { --font-read: 'Inter', 'Mukta', ui-sans-serif, system-ui, sans-serif; }
+body, .anu-lang-mr { font-family: var(--font-display); font-synthesis: none; }
+.anu-article p, .anu-article li, .anu-page .anu-article p,
+.anu-archive__desc, .anu-hero__sub, .anu-card__sub, .anu-alert, .anu-field-error, .anu-empty,
+.anu-footer__intro > p, .anu-footer__note, .anu-route dd, .anu-tips li, .anu-article figcaption,
+.anu-page > p, .anu-404 p,
+input, textarea, select {
+	font-family: var(--font-read);
+	font-synthesis: weight style;
+}
+.anu-article blockquote p { font-family: var(--font-quote), 'Mukta', serif; }
+.anu-tips li strong { font-family: var(--font-display); font-weight: 400; font-size: 1.15em; letter-spacing: .02em; }
+.anu-route dd { font-weight: 500; }
+
+/* Condensed capitals read smaller than Inter: lift the small UI text */
+.anu-logo__name { font-size: 20px; letter-spacing: .24em; font-weight: 400; }
+.anu-nav, body:has(.anu-showcase) .anu-nav { font-size: 16px; letter-spacing: .1em; font-weight: 400; gap: 26px; }
+.anu-lang { font-size: 16px; font-weight: 400; }
+.anu-menu__foot, .anu-search p, .anu-sub button, .anu-filters a, .anu-btn { font-size: 16px; letter-spacing: .1em; font-weight: 400; }
+.anu-footer h3, .anu-footer__bottom, .anu-kicker, .anu-share, .anu-route dt, .anu-tips h3, .anu-next small,
+.anu-eyebrow, .anu-card__meta, .anu-form label, .anu-video--empty span { font-size: 15px; letter-spacing: .12em; font-weight: 400; }
+.anu-footer ul { font-size: 19px; letter-spacing: .04em; }
+.anu-card__play { font-size: 13px; letter-spacing: .12em; font-weight: 400; }
+.anu-byline { font-size: 16px; letter-spacing: .04em; }
+.anu-byline b { font-weight: 400; font-size: 18px; letter-spacing: .06em; }
+.anu-tags a { font-size: 15px; letter-spacing: .06em; }
+.anu-hero__credit { font-size: 12px; letter-spacing: .06em; }
+@media (max-width: 640px) { .anu-logo__name { font-size: 17px; letter-spacing: .2em; } }
+
+/* Marathi titles (Mukta) look better a little heavier and taller */
+.anu-lang-mr :is(.anu-hero h1, .anu-archive h1, .anu-page h1, .anu-next__title, .anu-card h3, .anu-article h2) { font-weight: 600; line-height: 1.2; }
+.anu-lang-mr .anu-card h3 { font-size: 24px; }

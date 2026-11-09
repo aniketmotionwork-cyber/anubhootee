@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anubhootee Bold v1</title>
+<link rel="stylesheet" href="brand.css">
+<style>
+  /* ---------- Nav ---------- */
+  .nav { position: sticky; top: 0; z-index: 50; background: var(--ink); color: var(--chalk); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 16px; }
+  /* Logo: Option C, road line */
+  .brand { display: flex; flex-direction: column; line-height: 1; }
+  .brand .en { font-family: var(--font-display); font-size: 28px; letter-spacing: .02em; }
+  .brand .road { height: 4px; margin-top: 4px; background: repeating-linear-gradient(90deg, var(--turmeric) 0 14px, transparent 14px 21px); }
+  .brand:hover .road { animation: drive .6s linear infinite; }
+  @keyframes drive { to { background-position: 21px 0; } }
+  .menu { display: flex; gap: 22px; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }
+  .menu a:hover { color: var(--saffron); }
+  .nav-right { display: flex; align-items: center; gap: 12px; }
+  .lang { display: flex; border: 2px solid var(--chalk); border-radius: 999px; overflow: hidden; font-size: 12px; font-weight: 800; }
+  .lang button { background: none; border: 0; color: var(--chalk); padding: 6px 10px; cursor: pointer; font: inherit; }
+  .lang button.on { background: var(--chalk); color: var(--ink); }
+  .cart { font-weight: 800; font-size: 14px; background: var(--saffron); color: var(--ink); padding: 8px 14px; border-radius: 999px; }
+  .burger { display: none; background: none; border: 0; color: var(--chalk); font-size: 26px; cursor: pointer; }
+  .menu a { white-space: nowrap; }
+  .brand, .nav-right { flex-shrink: 0; }
+  @media (max-width: 1180px) {
+    .menu { display: none; position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; background: var(--ink); padding: 16px; gap: 14px; border-top: 1px solid #333; }
+    .menu.open { display: flex; }
+    .burger { display: block; }
+    .brand .mr { display: none; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { position: relative; min-height: 88vh; color: var(--chalk); display: flex; align-items: flex-end; overflow: hidden; }
+  .hero .bg { position: absolute; inset: 0; }
+  .hero .bg::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(13,13,13,.1) 30%, rgba(13,13,13,.85)); z-index: 1; }
+  .hero .wrap { position: relative; z-index: 2; padding-bottom: 64px; width: 100%; }
+  .hero .kicker { display: inline-block; background: var(--turmeric); color: var(--ink); font-weight: 800; padding: 6px 12px; border-radius: 6px; text-transform: uppercase; font-size: 12px; letter-spacing: .1em; }
+  .hero h1 { font-size: clamp(56px, 12vw, 168px); margin: 18px 0 10px; }
+  .hero h1 em { font-style: normal; color: var(--saffron); }
+  .hero h1.mr { font-family: var(--font-mr); font-weight: 800; line-height: 1.05; font-size: clamp(48px, 9vw, 128px); }
+  .hero .sub { font-size: clamp(18px, 2.4vw, 26px); max-width: 640px; }
+  .hero .sub.mr { font-size: clamp(20px, 2.6vw, 28px); color: var(--turmeric); margin-top: 6px; }
+  .hero .ctas { display: flex; gap: 12px; margin-top: 28px; flex-wrap: wrap; }
+  .play { position: absolute; right: 6%; top: 22%; z-index: 2; width: 120px; height: 120px; border-radius: 50%; background: var(--saffron); display: grid; place-items: center; font-size: 40px; color: var(--ink); box-shadow: 0 0 0 14px rgba(255,107,26,.25); }
+  @media (max-width: 760px) { .play { width: 76px; height: 76px; font-size: 26px; top: 16%; } }
+
+  /* ---------- Ticker ---------- */
+  .ticker { background: var(--saffron); color: var(--ink); overflow: hidden; white-space: nowrap; border-block: 3px solid var(--ink); }
+  .ticker .row { display: inline-block; padding: 14px 0; font-family: var(--font-display); font-size: 26px; text-transform: uppercase; animation: slide 30s linear infinite; }
+  .ticker .row span { margin: 0 22px; }
+  @keyframes slide { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .ticker .row { animation: none; } }
+
+  /* ---------- Section heads ---------- */
+  section.block { padding: 88px 0; }
+  .shead { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; margin-bottom: 36px; flex-wrap: wrap; }
+  .shead h2 { font-size: clamp(42px, 7vw, 88px); }
+  .shead h2 small { display: block; font-family: var(--font-mr); font-size: 22px; color: var(--saffron); text-transform: none; letter-spacing: 0; margin-bottom: 6px; }
+  .more { font-weight: 800; text-transform: uppercase; font-size: 14px; letter-spacing: .06em; border-bottom: 3px solid var(--saffron); padding-bottom: 2px; }
+
+  /* ---------- Stories grid ---------- */
+  .stories { display: grid; grid-template-columns: 1.4fr 1fr 1fr; grid-template-rows: auto auto; gap: 20px; }
+  .card { background: #fff; border: 2px solid var(--ink); border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: transform .15s, box-shadow .15s; }
+  .card:hover { transform: translate(-4px, -4px); box-shadow: 8px 8px 0 var(--ink); }
+  .card .img { aspect-ratio: 4/3; }
+  .card .body { padding: 18px 20px 22px; }
+  .card h3 { font-family: 'Archivo Black', sans-serif; font-size: 22px; line-height: 1.15; margin: 10px 0 8px; }
+  .card p { color: var(--muted); font-size: 15px; }
+  .card .meta { font-size: 12px; font-weight: 600; color: var(--muted); margin-top: 12px; text-transform: uppercase; letter-spacing: .05em; }
+  .card.big { grid-row: span 2; }
+  .card.big .img { aspect-ratio: auto; flex: 1; min-height: 340px; }
+  .card.big h3 { font-size: 32px; }
+  @media (max-width: 900px) { .stories { grid-template-columns: 1fr 1fr; } .card.big { grid-column: span 2; grid-row: auto; } }
+  @media (max-width: 600px) { .stories { grid-template-columns: 1fr; } .card.big { grid-column: auto; } }
+
+  /* ---------- Documentary ---------- */
+  .doc { background: var(--indigo); color: var(--chalk); }
+  .doc-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; align-items: center; }
+  .doc .screen { aspect-ratio: 16/9; border-radius: var(--radius); position: relative; border: 3px solid var(--turmeric); }
+  .doc .screen .play { position: absolute; inset: 0; margin: auto; top: 0; right: 0; }
+  .doc .screen .dur { position: absolute; bottom: 14px; right: 14px; background: var(--ink); padding: 4px 10px; border-radius: 6px; font-weight: 800; font-size: 13px; z-index: 3; }
+  .doc h2 { font-size: clamp(44px, 6vw, 80px); margin: 14px 0; }
+  .doc h2 em { font-style: normal; color: var(--turmeric); }
+  .doc p { opacity: .85; font-size: 17px; }
+  .doc .btn { margin-top: 24px; }
+  @media (max-width: 900px) { .doc-grid { grid-template-columns: 1fr; } }
+
+  /* ---------- Explore tiles ---------- */
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .tile { border-radius: var(--radius); padding: 28px 24px; min-height: 300px; display: flex; flex-direction: column; justify-content: space-between; border: 2px solid var(--ink); transition: transform .15s; }
+  .tile:hover { transform: rotate(-1.5deg) scale(1.02); }
+  .tile .num { font-family: var(--font-display); font-size: 20px; opacity: .6; }
+  .tile h3 { font-family: var(--font-display); font-size: clamp(40px, 4.6vw, 60px); text-transform: uppercase; line-height: .9; }
+  .tile .mr { font-size: 22px; font-weight: 600; margin-top: 6px; }
+  .tile .count { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+  @media (max-width: 900px) { .tiles { grid-template-columns: 1fr 1fr; } .tile { min-height: 220px; } }
+
+  /* ---------- Vlogs ---------- */
+  .vlogs { background: var(--ink); color: var(--chalk); }
+  .vlogs .shead h2 small { color: var(--turmeric); }
+  .vrow { display: grid; grid-template-columns: repeat(3, 1fr) repeat(2, 0.62fr); gap: 16px; align-items: end; }
+  .vid { position: relative; border-radius: var(--radius); overflow: hidden; }
+  .vid .img { aspect-ratio: 16/10; }
+  .vid.reel .img { aspect-ratio: 9/16; }
+  .vid .src { position: absolute; top: 10px; left: 10px; z-index: 2; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 6px; text-transform: uppercase; letter-spacing: .08em; }
+  .vid .src.yt { background: #FF0033; color: #fff; }
+  .vid .src.ig { background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF); color: #fff; }
+  .vid .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 14px; background: linear-gradient(transparent, rgba(0,0,0,.85)); font-weight: 600; font-size: 15px; z-index: 2; }
+  @media (max-width: 900px) { .vrow { grid-template-columns: repeat(2, 1fr); } .vid.reel .img { aspect-ratio: 9/12; } }
+
+  /* ---------- Shop ---------- */
+  .products { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .prod { background: #fff; border: 2px solid var(--ink); border-radius: var(--radius); overflow: hidden; }
+  .prod .img { aspect-ratio: 1; display: grid; place-items: center; font-size: 74px; }
+  .prod .body { padding: 14px 16px 18px; }
+  .prod h3 { font-size: 17px; font-weight: 800; margin: 8px 0 4px; }
+  .prod .row { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+  .prod .price { font-family: var(--font-display); font-size: 24px; }
+  .prod .add { background: var(--ink); color: var(--chalk); border: 0; border-radius: 999px; padding: 8px 14px; font-weight: 800; font-size: 12px; cursor: pointer; text-transform: uppercase; }
+  .prod .add:hover { background: var(--saffron); color: var(--ink); }
+  .shop-tag { background: var(--chalk); border: 1.5px solid var(--ink); }
+  @media (max-width: 900px) { .products { grid-template-columns: 1fr 1fr; } }
+
+  /* ---------- Newsletter ---------- */
+  .news { background: var(--turmeric); border-block: 3px solid var(--ink); }
+  .news .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; padding-block: 72px; }
+  .news h2 { font-size: clamp(40px, 6vw, 76px); }
+  .news form { display: flex; gap: 10px; flex-wrap: wrap; }
+  .news input { flex: 1; min-width: 200px; padding: 16px 20px; border-radius: 999px; border: 2px solid var(--ink); font: inherit; background: var(--chalk); }
+  .news .btn { background: var(--ink); color: var(--chalk); border-color: var(--ink); }
+  .socials { display: flex; gap: 10px; margin-top: 16px; flex-wrap: wrap; }
+  .socials a { font-weight: 800; font-size: 13px; text-transform: uppercase; border: 2px solid var(--ink); padding: 8px 14px; border-radius: 999px; }
+  .socials a:hover { background: var(--ink); color: var(--turmeric); }
+  @media (max-width: 900px) { .news .wrap { grid-template-columns: 1fr; } }
+
+  /* ---------- Footer ---------- */
+  footer { background: var(--ink); color: var(--chalk); padding: 72px 0 32px; }
+  .fgrid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; }
+  footer .big { font-family: var(--font-display); font-size: clamp(56px, 10vw, 128px); line-height: .85; }
+  footer .froad { height: 10px; margin: 12px 0; max-width: 640px; background: repeating-linear-gradient(90deg, var(--turmeric) 0 34px, transparent 34px 52px); }
+  footer h4 { text-transform: uppercase; font-size: 13px; letter-spacing: .1em; color: var(--turmeric); margin-bottom: 14px; }
+  footer ul { list-style: none; display: grid; gap: 8px; opacity: .85; }
+  footer ul a:hover { color: var(--saffron); }
+  .legal { margin-top: 56px; padding-top: 20px; border-top: 1px solid #333; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; font-size: 13px; opacity: .6; }
+  @media (max-width: 900px) { .fgrid { grid-template-columns: 1fr 1fr; } .fgrid > div:first-child { grid-column: span 2; } }
+
+  .mock-note { position: fixed; bottom: 16px; left: 16px; z-index: 99; background: var(--chalk); color: var(--ink); border: 2px solid var(--ink); border-radius: 999px; padding: 8px 14px; font-size: 12px; font-weight: 700; box-shadow: 4px 4px 0 var(--ink); }
+  .mock-note a { color: var(--saffron); }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <a href="#" class="brand" aria-label="Anubhootee home"><span class="en">ANUBHOOTEE</span><span class="road"></span></a>
+    <div class="menu" id="menu">
+      <a href="#stories">Stories</a><a href="#explore">Culture</a><a href="#explore">Food</a><a href="#explore">Road Travel</a><a href="#vlogs">Vlogs</a><a href="#doc">Documentaries</a><a href="#shop">Shop</a><a href="#about">About</a>
+    </div>
+    <div class="nav-right">
+      <div class="lang" role="group" aria-label="Language"><button class="on" data-lang="en">EN</button><button data-lang="mr" class="mr">मरा</button></div>
+      <a class="cart" href="#shop">🛒 0</a>
+      <button class="burger" aria-label="Open menu" onclick="document.getElementById('menu').classList.toggle('open')">☰</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="bg ph ph-6" data-glyph="अ"></div>
+  <a class="play" href="#doc" aria-label="Play latest film">▶</a>
+  <div class="wrap">
+    <span class="kicker" data-en="New film · Konkan Diaries" data-mr="नवीन चित्रपट · कोकण डायरी">New film · Konkan Diaries</span>
+    <h1 class="display" data-en="Feel India.<br><em>One road</em> at a time." data-mr="भारत अनुभवा.<br><em>एक रस्ता</em> एका वेळी.">Feel India.<br><em>One road</em> at a time.</h1>
+    <p class="sub" data-en="Stories, food, culture and road trips across India, in words, vlogs and films." data-mr="भारतभरातील गोष्टी, खाद्य, संस्कृती आणि रोड ट्रिप्स: शब्दांत, व्लॉग्समध्ये आणि चित्रपटांत.">Stories, food, culture and road trips across India, in words, vlogs and films.</p>
+    <p class="sub mr">गोष्टी · चव · संस्कृती · प्रवास</p>
+    <div class="ctas">
+      <a class="btn btn-solid" href="#doc">▶ Watch latest</a>
+      <a class="btn btn-ghost" href="#stories">Read stories →</a>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true"><div class="row">
+  <span>Misal Pav</span>★<span>Ghats of Sahyadri</span>★<span>Ganeshotsav</span>★<span>NH66 Coastal Road</span>★<span>Kolhapuri Tambda Rassa</span>★<span>Warli Art</span>★<span>Hampi</span>★<span>Vada Pav</span>★
+  <span>Misal Pav</span>★<span>Ghats of Sahyadri</span>★<span>Ganeshotsav</span>★<span>NH66 Coastal Road</span>★<span>Kolhapuri Tambda Rassa</span>★<span>Warli Art</span>★<span>Hampi</span>★<span>Vada Pav</span>★
+</div></div>
+
+<section class="block" id="stories">
+  <div class="wrap">
+    <div class="shead"><h2 class="display"><small>ताज्या गोष्टी</small>Latest stories</h2><a class="more" href="#">All stories →</a></div>
+    <div class="stories">
+      <a class="card big" href="#"><div class="img ph ph-1" data-glyph="र"></div><div class="body"><span class="tag tag-road">Road Travel</span><h3>1,200 km on NH66: Mumbai to Goa the slow way</h3><p>Fishing villages, forgotten forts and the best sol kadhi of our lives. A coastal road diary in nine stops.</p><div class="meta">12 min read · Konkan</div></div></a>
+      <a class="card" href="#"><div class="img ph ph-4" data-glyph="च"></div><div class="body"><span class="tag tag-food">Food</span><h3>Why Kolhapur's misal burns brighter</h3><div class="meta">6 min · Kolhapur</div></div></a>
+      <a class="card" href="#"><div class="img ph ph-3" data-glyph="स"></div><div class="body"><span class="tag tag-culture">Culture</span><h3>Inside a 150-year-old Ganpati workshop</h3><div class="meta">8 min · Pen</div></div></a>
+      <a class="card" href="#"><div class="img ph ph-5" data-glyph="ड"></div><div class="body"><span class="tag tag-diary">Diary</span><h3>Monsoon night at Malshej Ghat</h3><div class="meta">3 min · Diary #14</div></div></a>
+      <a class="card" href="#"><div class="img ph ph-2" data-glyph="क"></div><div class="body"><span class="tag tag-culture">Culture</span><h3>The last Warli painters of Dahanu</h3><div class="meta">10 min · Palghar</div></div></a>
+    </div>
+  </div>
+</section>
+
+<section class="block doc" id="doc">
+  <div class="wrap doc-grid">
+    <div class="screen ph ph-1" data-glyph="फ"><a class="play" href="#" aria-label="Play documentary">▶</a><span class="dur">42:18</span></div>
+    <div>
+      <span class="tag tag-culture">Documentary</span>
+      <h2 class="display">The Salt<br><em>Keepers</em></h2>
+      <p>A season with the salt farmers of the Konkan coast: the families, the tides and a craft older than the road that leads to it.</p>
+      <p class="mr" style="margin-top:10px;color:var(--turmeric)">मिठागरांची गोष्ट</p>
+      <a class="btn btn-solid" href="#">▶ Watch on YouTube</a>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="explore">
+  <div class="wrap">
+    <div class="shead"><h2 class="display"><small>विषयानुसार शोधा</small>Explore India</h2></div>
+    <div class="tiles">
+      <a class="tile" href="#" style="background:var(--turmeric)"><span class="num">01</span><div><h3>Culture</h3><div class="mr">संस्कृती</div></div><span class="count">48 stories →</span></a>
+      <a class="tile" href="#" style="background:var(--chili);color:#fff"><span class="num">02</span><div><h3>Food</h3><div class="mr">खाद्य</div></div><span class="count">63 stories →</span></a>
+      <a class="tile" href="#" style="background:var(--indigo);color:#fff"><span class="num">03</span><div><h3>Road<br>Travel</h3><div class="mr">प्रवास</div></div><span class="count">31 routes →</span></a>
+      <a class="tile" href="#" style="background:var(--saffron)"><span class="num">04</span><div><h3>Diaries</h3><div class="mr">डायरी</div></div><span class="count">22 entries →</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="block vlogs" id="vlogs">
+  <div class="wrap">
+    <div class="shead"><h2 class="display"><small>व्लॉग्स आणि रील्स</small>Vlogs &amp; reels</h2><a class="more" href="#">YouTube channel →</a></div>
+    <div class="vrow">
+      <a class="vid" href="#"><span class="src yt">YouTube</span><div class="img ph ph-2" data-glyph="व"></div><div class="cap">24 hours in Pune: food only</div></a>
+      <a class="vid" href="#"><span class="src yt">YouTube</span><div class="img ph ph-5" data-glyph="घ"></div><div class="cap">Sahyadri monsoon drive</div></a>
+      <a class="vid" href="#"><span class="src yt">YouTube</span><div class="img ph ph-3" data-glyph="ज"></div><div class="cap">Jejuri: the golden temple</div></a>
+      <a class="vid reel" href="#"><span class="src ig">Reel</span><div class="img ph ph-4" data-glyph="व"></div><div class="cap">₹20 vada pav</div></a>
+      <a class="vid reel" href="#"><span class="src ig">Reel</span><div class="img ph ph-1" data-glyph="ढ"></div><div class="cap">Dhol tasha practice</div></a>
+    </div>
+  </div>
+</section>
+
+<section class="block" id="shop">
+  <div class="wrap">
+    <div class="shead"><h2 class="display"><small>दुकान</small>Shop the journey</h2><a class="more" href="#">Visit shop →</a></div>
+    <div class="products">
+      <div class="prod"><div class="img ph-3">👕</div><div class="body"><span class="tag shop-tag">Merch</span><h3>"One Road" tee, saffron</h3><div class="row"><span class="price">₹799</span><button class="add">Add</button></div></div></div>
+      <div class="prod"><div class="img ph-4">🌶️</div><div class="body"><span class="tag shop-tag">Food &amp; spices</span><h3>Kolhapuri kanda-lasun masala</h3><div class="row"><span class="price">₹249</span><button class="add">Add</button></div></div></div>
+      <div class="prod"><div class="img ph-2">🏺</div><div class="body"><span class="tag shop-tag">Handicrafts</span><h3>Warli painted terracotta pot</h3><div class="row"><span class="price">₹1,299</span><button class="add">Add</button></div></div></div>
+      <div class="prod"><div class="img ph-5">📘</div><div class="body"><span class="tag shop-tag">Digital</span><h3>Konkan road trip guide (PDF)</h3><div class="row"><span class="price">₹199</span><button class="add">Add</button></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="news" id="about">
+  <div class="wrap">
+    <div><h2 class="display">Get the stories first.</h2><p class="mr" style="font-size:22px;font-weight:600;margin-top:8px">नवीन गोष्टी थेट तुमच्या इनबॉक्समध्ये.</p></div>
+    <div>
+      <form onsubmit="event.preventDefault(); this.querySelector('button').textContent='Thanks! ✓'">
+        <input type="email" placeholder="your@email.com" aria-label="Email address" required>
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+      <div class="socials"><a href="#">YouTube</a><a href="#">Instagram</a><a href="#">Facebook</a><a href="#">WhatsApp</a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fgrid">
+      <div><div class="big">ANUBHOOTEE</div><div class="froad"></div><p class="mr" style="font-size:24px;font-weight:800">अनुभूती · प्रवास · चव · संस्कृती</p></div>
+      <div><h4>Read</h4><ul><li><a href="#">Stories</a></li><li><a href="#">Diaries</a></li><li><a href="#">Culture</a></li><li><a href="#">Food</a></li><li><a href="#">Road Travel</a></li></ul></div>
+      <div><h4>Watch</h4><ul><li><a href="#">Vlogs</a></li><li><a href="#">Documentaries</a></li><li><a href="#">Reels</a></li></ul></div>
+      <div><h4>Shop &amp; more</h4><ul><li><a href="#">Shop</a></li><li><a href="#">About</a></li><li><a href="#">Contact</a></li><li><a href="#">Shipping &amp; Returns</a></li></ul></div>
+    </div>
+    <div class="legal"><span>© 2026 Anubhootee. Made with ❤ across India.</span><span>Privacy · Terms · Refunds</span></div>
+  </div>
+</footer>
+
+<div class="mock-note">Design mockup · <a href="logo-options.html">Brand options</a></div>
+
+<script>
+  // Demo EN / मराठी toggle for the hero (full translation comes via Polylang in WordPress)
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => {
+    document.querySelectorAll('.lang button').forEach(x => x.classList.toggle('on', x === b));
+    const lang = b.dataset.lang;
+    document.querySelectorAll('[data-en]').forEach(el => {
+      el.innerHTML = el.dataset[lang];
+      el.classList.toggle('mr', lang === 'mr');
+    });
+  }));
+</script>
+</body>
+</html>
