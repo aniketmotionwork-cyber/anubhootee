@@ -38,7 +38,7 @@ body:has(.anu-showcase) { overflow: hidden; background: #0B0907; }
 .anu-showcase .anu-sc-fg { position: absolute; inset: 0; z-index: 4; pointer-events: none; }
 .anu-showcase .anu-sc-slides--front { z-index: 5; }
 .anu-sc-slides--back .anu-sc-slide > :not(.anu-sc-title) { visibility: hidden; }
-.anu-sc-slides--front .anu-sc-title { visibility: hidden; }
+.anu-sc-slides--front .anu-sc-title { opacity: 0; } /* invisible but still read by screen readers */
 .anu-sc-fg-gl, .anu-sc-fg-fallback { position: absolute; inset: 0; width: 100%; height: 100%; }
 .anu-sc-fg-fallback { display: none; }
 .anu-showcase.no-webgl .anu-sc-fg-gl { display: none; }
@@ -51,11 +51,11 @@ body:has(.anu-showcase) { overflow: hidden; background: #0B0907; }
 
 
 /* ---------- Title block (left, lower-middle) ---------- */
-/* Text block is centred horizontally in the upper part of the photo, below the nav;
-   the big title lands about a third of the way down. (showcase.js drives the vertical drag motion.) */
-.anu-sc-slides { position: absolute; left: var(--sc-pad); right: var(--sc-pad); top: max(30%, 220px); z-index: 5; will-change: transform; pointer-events: none; transform: translateY(calc(var(--sc-gap, 60vh) / -2)); }
-.anu-sc-slide { height: var(--sc-gap, 60vh); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; opacity: 0; transition: opacity .6s ease; }
-.anu-sc-slide.is-active { opacity: 1; }
+/* Text block is centred horizontally in the upper part of the photo, below the nav.
+   All chapters are stacked in the same spot; Motion (showcase.js) animates them in and out. */
+.anu-sc-slides { position: absolute; left: var(--sc-pad); right: var(--sc-pad); top: max(30%, 220px); height: 0; z-index: 5; pointer-events: none; }
+.anu-sc-slide { position: absolute; left: 0; right: 0; top: 0; transform: translateY(-50%); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; visibility: hidden; }
+.anu-sc-slide.is-active, .anu-sc-slide.is-leaving { visibility: visible; }
 
 .anu-sc-meta { display: flex; justify-content: center; align-items: center; gap: 12px; font-size: 16px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: var(--sc-dim); margin-bottom: 18px; }
 .anu-sc-num { font-variant-numeric: tabular-nums; color: var(--sc-chalk); }
@@ -66,7 +66,10 @@ body:has(.anu-showcase) { overflow: hidden; background: #0B0907; }
 	font-size: min(clamp(72px, 10vw, 140px), 17vh); line-height: .9; /* 17vh keeps it clear of the menu on short screens */
 	margin: 0; white-space: nowrap;
 	text-shadow: 0 2px 40px rgba(0,0,0,.18);
+	perspective: 900px;
 }
+/* Each letter is animated on its own (rise, 3D tilt, blur) */
+.anu-ch { display: inline-block; transform-origin: 50% 100%; will-change: transform, opacity, filter; backface-visibility: hidden; }
 .anu-sc-deva { font-family: 'Mukta', 'Tiro Devanagari Marathi', sans-serif; font-weight: 300; font-size: clamp(18px, 1.7vw, 26px); color: rgba(250,244,234,.85); margin-top: 14px; letter-spacing: 0; }
 .anu-sc-more {
 	pointer-events: auto; display: inline-flex; align-items: center; gap: 14px; margin-top: 28px;
@@ -79,12 +82,6 @@ body:has(.anu-showcase) { overflow: hidden; background: #0B0907; }
 .anu-sc-more:hover .anu-sc-line { width: 44px; }
 .anu-sc-slide:not(.is-active) .anu-sc-more { pointer-events: none; }
 
-/* Staggered entrance when a chapter becomes active */
-.anu-sc-slide > * { transform: translateY(26px); transition: transform 1s var(--sc-ease); }
-.anu-sc-slide .anu-sc-title { transform: translateY(48px); transition-duration: 1.1s; }
-.anu-sc-slide.is-active > * { transform: none; }
-.anu-sc-slide.is-active .anu-sc-deva { transition-delay: .08s; }
-.anu-sc-slide.is-active .anu-sc-more { transition-delay: .14s; }
 
 /* ---------- Bottom bar: counter · section indicators · drag ---------- */
 .anu-sc-bottom {

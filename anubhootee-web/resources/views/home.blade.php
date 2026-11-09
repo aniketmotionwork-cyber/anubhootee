@@ -31,7 +31,7 @@
                     @foreach ($chapters as $i => $ch)
                         <div class="anu-sc-slide {{ $i === 0 ? 'is-active' : '' }}" @if ($layer === 'front') role="listitem" @endif>
                             <div class="anu-sc-meta"><span class="anu-sc-num">{{ Lang::digits(str_pad($i + 1, 2, '0', STR_PAD_LEFT)) }}</span><span class="anu-sc-bar" aria-hidden="true"></span><span>{{ $ch['tag'] }}</span></div>
-                            <h2 class="anu-sc-title">{{ $ch['title'] }}</h2>
+                            <h2 class="anu-sc-title" aria-label="{{ $ch['title'] }}">@foreach (mb_str_split($ch['title']) as $letter)<span class="anu-ch" aria-hidden="true">{{ $letter === ' ' ? "\u{00A0}" : $letter }}</span>@endforeach</h2>
                             @if ($ch['deva'])<div class="anu-sc-deva" lang="mr">{{ $ch['deva'] }}</div>@endif
                             <a class="anu-sc-more" href="{{ $ch['url'] }}" @if ($layer === 'back') tabindex="-1" @endif><span class="anu-sc-line" aria-hidden="true"></span>{{ $ch['cta'] }}</a>
                         </div>
