@@ -57,7 +57,7 @@
                 <div class="anu-sc-hint" aria-hidden="true"><span class="anu-sc-hint__icon"></span>{{ Lang::isMarathi() ? 'ओढा' : 'Drag' }}</div>
             </div>
 
-            <script type="application/json" class="anu-sc-data">{!! json_encode(['chapters' => $chapters, 'photo' => __('Photo')], JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+            <script type="application/json" class="anu-sc-data">{!! json_encode(['chapters' => $chapters, 'photo' => __('Photo'), 'fx' => config('anubhootee.transition')], JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
         </div>
     @endif
 @endsection

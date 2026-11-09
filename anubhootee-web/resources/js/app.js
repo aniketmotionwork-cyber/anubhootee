@@ -71,6 +71,29 @@ Alpine.start();
 		window.addEventListener('resize', () => { clearTimeout(t); t = setTimeout(check, 150); });
 	}
 
+	/* Shared-layout transitions: name the clicked element so the next page can morph it into place */
+	document.addEventListener('click', (e) => {
+		if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+		const card = e.target.closest('.anu-card, .anu-next');
+		if (card) {
+			const img = card.querySelector('img');
+			const title = card.querySelector('h3, .anu-next__title');
+			if (img) img.style.viewTransitionName = 'anu-photo';
+			if (title) title.style.viewTransitionName = 'anu-heading';
+			return;
+		}
+		const more = e.target.closest('.anu-sc-slides--front .anu-sc-more');
+		if (more) {
+			const i = Array.prototype.indexOf.call(more.closest('.anu-sc-slides').children, more.closest('.anu-sc-slide'));
+			const title = document.querySelector('.anu-sc-slides--back').children[i]?.querySelector('.anu-sc-title');
+			if (title) title.style.viewTransitionName = 'anu-title';
+		}
+	}, true);
+	// Coming back with the browser's Back button: clear the names so they don't clash
+	window.addEventListener('pageshow', () => {
+		document.querySelectorAll('[style*="view-transition-name"]').forEach((el) => { el.style.viewTransitionName = ''; });
+	});
+
 	document.addEventListener('click', (e) => {
 		const btn = e.target.closest('[data-anu-copy]');
 		if (!btn) return;

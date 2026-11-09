@@ -10,4 +10,7 @@ return [
         'Facebook' => env('ANU_FACEBOOK'),
     ],
     'email' => env('ANU_EMAIL', 'hello@yourdomain.com'),
+
+    // Homepage photo transition: spring, ink, columns, mandala, shutter, mosaic or dolly
+    'transition' => env('ANU_TRANSITION', 'spring'),
 ];

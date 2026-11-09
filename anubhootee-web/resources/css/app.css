@@ -301,6 +301,26 @@ body:has(.anu-showcase) .anu-nav { gap: 30px; font-size: 11px; letter-spacing: .
 [x-cloak] { display: none !important; }
 
 /* =========================================================
+   Shared-layout page transitions (View Transitions API, like Framer Motion's layoutId across pages):
+   - homepage chapter link → section page: the big title glides into the section heading
+   - story card / "next story" → story page: the photo expands into the hero, the title flies into the headline
+   Names on the departing page are set by JS on click; the arriving page names them here.
+   ========================================================= */
+@view-transition { navigation: auto; }
+::view-transition-group(*) { animation-duration: .8s; animation-timing-function: cubic-bezier(.22, 1, .36, 1); }
+::view-transition-old(root) { animation: .35s ease both anu-vt-out; }
+::view-transition-new(root) { animation: .55s .15s ease both anu-vt-in; }
+@keyframes anu-vt-out { to { opacity: 0; } }
+@keyframes anu-vt-in { from { opacity: 0; } }
+.anu-archive h1 { view-transition-name: anu-title; }
+.anu-hero > img { view-transition-name: anu-photo; }
+.anu-hero:not(.has-depth) .anu-hero__inner--front h1,
+.anu-hero.has-depth .anu-hero__inner--back h1 { view-transition-name: anu-heading; }
+@media (prefers-reduced-motion: reduce) {
+	@view-transition { navigation: none; }
+}
+
+/* =========================================================
    Headline font everywhere: every big heading uses --font-display.
    Devanagari in a heading falls back to Mukta automatically.
    The font has one weight, so faux-bold is switched off.
