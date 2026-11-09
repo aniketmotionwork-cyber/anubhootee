@@ -19,7 +19,6 @@
                 <canvas class="anu-sc-gl" aria-hidden="true"></canvas>
                 <div class="anu-sc-fallback" aria-hidden="true"></div>
                 <div class="anu-sc-shade" aria-hidden="true"></div>
-                <div class="anu-sc-grid" aria-hidden="true"></div>
             </div>
 
             {{--

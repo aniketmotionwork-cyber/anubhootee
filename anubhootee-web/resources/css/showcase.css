@@ -49,20 +49,11 @@ body:has(.anu-showcase) { overflow: hidden; background: #0B0907; }
 .anu-sc-fg-fallback img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
 .anu-sc-fg-fallback i { position: absolute; inset: 0; background: inherit; }
 
-/* Subtle grid: 12 columns on desktop, 6 on tablet, 4 on phones */
-.anu-sc-grid {
-	--cols: 12;
-	position: absolute; inset: 0 var(--sc-pad); pointer-events: none; z-index: 2;
-	border-inline: 1px solid rgba(250,244,234,.07);
-	background: repeating-linear-gradient(90deg, transparent 0, transparent calc(100% / var(--cols) - 1px), rgba(250,244,234,.07) calc(100% / var(--cols) - 1px), rgba(250,244,234,.07) calc(100% / var(--cols)));
-	opacity: 0; animation: anu-sc-fade 1.6s .6s ease forwards;
-}
-@keyframes anu-sc-fade { to { opacity: 1; } }
 
 /* ---------- Title block (left, lower-middle) ---------- */
 /* Text block is centred horizontally in the upper part of the photo, below the nav;
    the big title lands about a third of the way down. (showcase.js drives the vertical drag motion.) */
-.anu-sc-slides { position: absolute; left: var(--sc-pad); right: var(--sc-pad); top: 30%; z-index: 5; will-change: transform; pointer-events: none; transform: translateY(calc(var(--sc-gap, 60vh) / -2)); }
+.anu-sc-slides { position: absolute; left: var(--sc-pad); right: var(--sc-pad); top: max(30%, 220px); z-index: 5; will-change: transform; pointer-events: none; transform: translateY(calc(var(--sc-gap, 60vh) / -2)); }
 .anu-sc-slide { height: var(--sc-gap, 60vh); display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; opacity: 0; transition: opacity .6s ease; }
 .anu-sc-slide.is-active { opacity: 1; }
 
@@ -72,7 +63,7 @@ body:has(.anu-showcase) { overflow: hidden; background: #0B0907; }
 
 .anu-showcase .anu-sc-title {
 	color: #FFFFFF; /* font-family: the headline font, set in app.css */
-	font-size: clamp(72px, 10vw, 140px); line-height: .9;
+	font-size: min(clamp(72px, 10vw, 140px), 17vh); line-height: .9; /* 17vh keeps it clear of the menu on short screens */
 	margin: 0; white-space: nowrap;
 	text-shadow: 0 2px 40px rgba(0,0,0,.18);
 }
@@ -138,7 +129,6 @@ body:has(.anu-showcase) { overflow: hidden; background: #0B0907; }
 
 /* ---------- Tablet ---------- */
 @media (max-width: 1024px) {
-	.anu-sc-grid { --cols: 6; }
 	.anu-showcase .anu-sc-title { font-size: clamp(64px, 13vw, 130px); }
 	.anu-sc-progress em { display: none; }
 	.anu-sc-progress button.is-on em { display: inline; }
@@ -148,7 +138,6 @@ body:has(.anu-showcase) { overflow: hidden; background: #0B0907; }
 
 /* ---------- Phone ---------- */
 @media (max-width: 640px) {
-	.anu-sc-grid { --cols: 4; }
 	.anu-sc-slides { top: 32%; }
 	.anu-showcase .anu-sc-title { font-size: clamp(56px, 20vw, 110px); white-space: normal; line-height: .9; }
 	.anu-sc-bottom { grid-template-columns: auto 1fr; gap: 16px; padding-bottom: 18px; }
@@ -158,5 +147,5 @@ body:has(.anu-showcase) { overflow: hidden; background: #0B0907; }
 	.anu-sc-credit { bottom: 76px; max-width: 70vw; }
 }
 @media (prefers-reduced-motion: reduce) {
-	.anu-sc-slide > *, .anu-sc-grid, .anu-sc-hint__icon::after { transition: none; animation: none; opacity: 1; transform: none; }
+	.anu-sc-slide > *, .anu-sc-hint__icon::after { transition: none; animation: none; opacity: 1; transform: none; }
 }
